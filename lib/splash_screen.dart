@@ -19,6 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+    });
+
     Timer(Duration(seconds: 5), () {
       Get.toNamed(AppRoutes.startApp);
     });

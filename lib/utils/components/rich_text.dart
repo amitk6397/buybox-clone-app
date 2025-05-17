@@ -56,28 +56,3 @@ RichText richText3() {
     ),
   );
 }
-
-// for login page
-
-RichText richText4() {
-  return RichText(
-    text: TextSpan(
-      style: TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
-      children: [
-        TextSpan(text: 'Buy'),
-        TextSpan(
-          text: 'Box',
-          style: TextStyle(
-            color: AppColors.yellow,
-            fontSize: 25,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ],
-    ),
-  );
-}
