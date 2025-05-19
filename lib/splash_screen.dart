@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/views/start_page/start_pages.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     // TODO: implement initState
@@ -22,10 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
     });
-
-    Timer(Duration(seconds: 5), () {
-      Get.toNamed(AppRoutes.startApp);
-    });
+    if (user?.email != null) {
+      Timer(Duration(seconds: 5), () {
+        Get.offAllNamed(AppRoutes.home);
+      });
+    } else {
+      Timer(Duration(seconds: 5), () {
+        Get.offAllNamed(AppRoutes.startApp);
+      });
+    }
   }
 
   @override

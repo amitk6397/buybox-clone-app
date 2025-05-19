@@ -1,4 +1,4 @@
-import 'package:buybox_app/controllers/validation_controller.dart';
+import 'package:buybox_app/controllers/firebase_auth_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/login_components.dart';
@@ -15,7 +15,7 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  //final ValidationController _controller = Get.put(ValidationController());
+  final FirebaseAuthController _controller = Get.find();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -160,7 +160,9 @@ class _SigninPageState extends State<SigninPage> {
                       button3(
                         'Connect With Google',
                         'assets/images/Google.png',
-                        () {},
+                        () {
+                          _controller.googleLogin();
+                        },
                       ),
                       SizedBox(height: 20),
                       button2('Connect With Apple', Icons.apple, () {}),

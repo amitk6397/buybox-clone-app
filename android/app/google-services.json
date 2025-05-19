@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "127506423908",
+    "project_id": "buybox-app",
+    "storage_bucket": "buybox-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127506423908:android:643daded5ad00ddb087f71",
+        "android_client_info": {
+          "package_name": "com.example.buybox_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHrene81T8m2T7chnpa2wETuJRsNmVhoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,10 @@
+import 'package:buybox_app/controllers/firebase_auth_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+final FirebaseAuthController _controller = Get.put(FirebaseAuthController());
 
 Widget textFeild(
   TextEditingController controller,
@@ -82,18 +86,25 @@ Widget passwordTextFeild(
 }
 
 Widget button(String label, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      width: double.infinity,
-      height: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: AppColors.green,
+  return Obx(() {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: AppColors.green,
+        ),
+        child: Center(
+          child:
+              _controller.isLoading.value
+                  ? CircularProgressIndicator(backgroundColor: AppColors.white)
+                  : Text(label, style: nextButton()),
+        ),
       ),
-      child: Center(child: Text(label, style: nextButton())),
-    ),
-  );
+    );
+  });
 }
 
 Widget button2(String label, IconData icon, VoidCallback onTap) {

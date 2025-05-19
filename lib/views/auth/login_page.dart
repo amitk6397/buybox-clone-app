@@ -1,12 +1,14 @@
-import 'package:buybox_app/controllers/validation_controller.dart';
+import 'package:buybox_app/controllers/firebase_auth_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/login_components.dart';
 import 'package:buybox_app/utils/components/rich_text.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +18,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final ValidationController _controller = Get.put(ValidationController());
+  final FirebaseAuthController _controller = Get.find();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController emailController = TextEditingController();
@@ -128,7 +131,12 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       SizedBox(height: 20),
-                      button('Sign in', () {}),
+                      button('Sign in', () {
+                        _controller.login(
+                          emailController.text.trim(),
+                          passController.text.trim(),
+                        );
+                      }),
                       SizedBox(height: 20),
                       Text(
                         'Or Sign in with',
@@ -141,7 +149,9 @@ class _LoginPageState extends State<LoginPage> {
                       button3(
                         'Connect With Google',
                         'assets/images/Google.png',
-                        () {},
+                        () {
+                          _controller.googleLogin();
+                        },
                       ),
                       SizedBox(height: 20),
                       button2('Connect With Apple', Icons.apple, () {}),

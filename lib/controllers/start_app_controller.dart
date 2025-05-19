@@ -16,7 +16,7 @@ class StartAppController extends GetxController {
 
   void addIndex() {
     if (_images.length - 1 == _index.value) {
-      Get.toNamed(AppRoutes.login);
+      Get.offAllNamed(AppRoutes.login);
     } else {
       _index.value += 1;
       print(index);
