@@ -12,4 +12,8 @@ class AppColors {
 
   static const Color successMessageColor = Colors.green;
   static const Color errorMessageColor = Colors.red;
+
+  //Home Screen Colors
+
+  //static const Color homeText = Colors.grey;
 }

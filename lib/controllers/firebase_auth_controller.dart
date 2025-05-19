@@ -16,7 +16,7 @@ class FirebaseAuthController extends GetxController {
           .signInWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user != null) {
-        Get.offAllNamed('/home');
+        Get.offAllNamed(AppRoutes.myHome);
         Get.snackbar(
           'Success',
           'Login Success',
@@ -26,9 +26,10 @@ class FirebaseAuthController extends GetxController {
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Error',
-        'Login Faied',
+        '${e.toString()}',
         backgroundColor: AppColors.errorMessageColor,
       );
+      print(e);
     } finally {
       isLoading.value = false;
       print('finally =  = = = = = = = == == = ${isLoading.value}');
@@ -48,7 +49,7 @@ class FirebaseAuthController extends GetxController {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
-      Get.offAllNamed('/home');
+      Get.offAllNamed(AppRoutes.myHome);
       Get.snackbar(
         'Success',
         'Login Success',

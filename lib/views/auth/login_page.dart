@@ -54,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
               color: AppColors.white,
               image: DecorationImage(
-                image: NetworkImage(
-                  'https://previews.123rf.com/images/sanek13744/sanek137441801/sanek13744180100450/94602295-shopping-cart-seamless-pattern-background-business-concept-vector-illustration-cart-symbol-pattern.jpg',
-                ),
+                image: AssetImage('assets/images/cooking_background.webp'),
                 fit: BoxFit.cover,
                 opacity: 0.2,
               ),
@@ -136,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                           emailController.text.trim(),
                           passController.text.trim(),
                         );
-                      }),
+                      }, _controller.isLoading),
                       SizedBox(height: 20),
                       Text(
                         'Or Sign in with',

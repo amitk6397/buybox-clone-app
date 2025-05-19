@@ -1,10 +1,9 @@
 import 'package:buybox_app/controllers/firebase_auth_controller.dart';
+import 'package:buybox_app/controllers/firebase_signUp_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-final FirebaseAuthController _controller = Get.put(FirebaseAuthController());
 
 Widget textFeild(
   TextEditingController controller,
@@ -85,7 +84,7 @@ Widget passwordTextFeild(
   );
 }
 
-Widget button(String label, VoidCallback onTap) {
+Widget button(String label, VoidCallback onTap, RxBool isLoading) {
   return Obx(() {
     return GestureDetector(
       onTap: onTap,
@@ -98,7 +97,7 @@ Widget button(String label, VoidCallback onTap) {
         ),
         child: Center(
           child:
-              _controller.isLoading.value
+              isLoading.value
                   ? CircularProgressIndicator(backgroundColor: AppColors.white)
                   : Text(label, style: nextButton()),
         ),

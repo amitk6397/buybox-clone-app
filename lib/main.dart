@@ -1,7 +1,14 @@
 import 'package:buybox_app/controllers/firebase_auth_controller.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/route/app_pages.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/splash_screen.dart';
+import 'package:buybox_app/utils/components/bottom_navigationbar.dart';
+import 'package:buybox_app/views/categories_page.dart';
+import 'package:buybox_app/views/favorites_items_page.dart';
+import 'package:buybox_app/views/home/home_screen.dart';
+import 'package:buybox_app/views/profile/profiel_screen.dart';
+import 'package:buybox_app/views/shopping_cart_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +35,37 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final NavigationbarController _controller = Get.find();
+
+  List<Widget> screenList = [
+    HomeScreen(),
+    CategoriesPage(),
+    ShoppingCartPage(),
+    FavoritesItemsPage(),
+    ProfielScreen(),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Obx(() {
+        return IndexedStack(
+          index: _controller.index.value,
+          children: screenList,
+        );
+      }),
+      bottomNavigationBar: bottomNavigationBar(_controller),
     );
   }
 }

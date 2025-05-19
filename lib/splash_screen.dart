@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     if (user?.email != null) {
       Timer(Duration(seconds: 5), () {
-        Get.offAllNamed(AppRoutes.home);
+        Get.offAllNamed(AppRoutes.myHome);
       });
     } else {
       Timer(Duration(seconds: 5), () {
@@ -46,9 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
               decoration: BoxDecoration(
                 color: AppColors.green,
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://previews.123rf.com/images/sanek13744/sanek137441801/sanek13744180100450/94602295-shopping-cart-seamless-pattern-background-business-concept-vector-illustration-cart-symbol-pattern.jpg',
-                  ),
+                  image: AssetImage('assets/images/cooking_background.webp'),
                   fit: BoxFit.cover,
                   opacity: 0.1,
                 ),

@@ -1,4 +1,5 @@
 import 'package:buybox_app/route/app_routes.dart';
+import 'package:buybox_app/utils/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,12 @@ class FirebaseSignupController extends GetxController {
 
       //navigate
 
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.myHome);
+      Get.snackbar(
+        "Success",
+        "Register Success",
+        backgroundColor: AppColors.successMessageColor,
+      );
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Error', e.message ?? 'Unknown error occurred');
     } finally {

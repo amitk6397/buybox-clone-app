@@ -5,4 +5,5 @@ class AppRoutes {
   static const String signIn = '/signIn';
   static const String wrapper = '/wrapper';
   static const String home = '/home';
+  static const String myHome = '/myHome';
 }

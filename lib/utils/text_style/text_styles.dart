@@ -16,3 +16,31 @@ TextStyle nextButton() {
     fontWeight: FontWeight.w500,
   );
 }
+
+// home screen text Style
+
+TextStyle nameText() {
+  return TextStyle(
+    fontSize: 25,
+    color: Colors.black87,
+    fontWeight: FontWeight.bold,
+  );
+}
+
+TextStyle categoriesText() {
+  return TextStyle(
+    fontSize: 20,
+    color: Colors.grey.shade700,
+    fontWeight: FontWeight.bold,
+  );
+}
+
+//appBar text style
+
+TextStyle appBarText() {
+  return TextStyle(
+    fontSize: 20,
+    color: AppColors.white,
+    fontWeight: FontWeight.bold,
+  );
+}

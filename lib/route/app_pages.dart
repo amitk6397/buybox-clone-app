@@ -1,4 +1,6 @@
 import 'package:buybox_app/binding/auth_binding.dart';
+import 'package:buybox_app/binding/home_binding.dart';
+import 'package:buybox_app/main.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/splash_screen.dart';
 import 'package:buybox_app/views/auth/login_page.dart';
@@ -23,6 +25,15 @@ class AppPages {
       binding: AuthBinding(),
     ),
 
-    GetPage(name: AppRoutes.home, page: () => HomeScreen()),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => HomeScreen(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.myHome,
+      page: () => MyHomePage(),
+      binding: HomeBinding(),
+    ),
   ];
 }

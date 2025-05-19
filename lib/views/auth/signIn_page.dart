@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/firebase_auth_controller.dart';
+import 'package:buybox_app/controllers/firebase_signUp_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/login_components.dart';
@@ -16,6 +17,7 @@ class SigninPage extends StatefulWidget {
 
 class _SigninPageState extends State<SigninPage> {
   final FirebaseAuthController _controller = Get.find();
+  final FirebaseSignupController _controller2 = Get.find();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -54,9 +56,7 @@ class _SigninPageState extends State<SigninPage> {
             decoration: BoxDecoration(
               color: AppColors.white,
               image: DecorationImage(
-                image: NetworkImage(
-                  'https://previews.123rf.com/images/sanek13744/sanek137441801/sanek13744180100450/94602295-shopping-cart-seamless-pattern-background-business-concept-vector-illustration-cart-symbol-pattern.jpg',
-                ),
+                image: AssetImage('assets/images/cooking_background.webp'),
                 fit: BoxFit.cover,
                 opacity: 0.2,
               ),
@@ -147,7 +147,13 @@ class _SigninPageState extends State<SigninPage> {
                         },
                       ),
                       SizedBox(height: 20),
-                      button('Register', () {}),
+                      button('Register', () {
+                        _controller2.signUp(
+                          userNameController.text.trim(),
+                          emailController.text.trim(),
+                          passController.text.trim(),
+                        );
+                      }, _controller2.isLoading),
                       SizedBox(height: 20),
                       Text(
                         'Or Register with',
