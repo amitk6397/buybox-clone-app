@@ -5,13 +5,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfielScreen extends StatelessWidget {
   const ProfielScreen({super.key});
 
   singOut() async {
-    await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
+    final pref = await SharedPreferences.getInstance();
+    pref.clear();
+    // await GoogleSignIn().signOut();
+    // await FirebaseAuth.instance.signOut();
     Get.offAllNamed(AppRoutes.login);
   }
 

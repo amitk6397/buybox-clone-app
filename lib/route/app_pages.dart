@@ -6,6 +6,7 @@ import 'package:buybox_app/splash_screen.dart';
 import 'package:buybox_app/views/auth/login_page.dart';
 import 'package:buybox_app/views/auth/signIn_page.dart';
 import 'package:buybox_app/views/home/home_screen.dart';
+import 'package:buybox_app/views/location_page.dart';
 import 'package:buybox_app/views/start_page/start_pages.dart';
 
 import 'package:get/get.dart';
@@ -33,6 +34,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.myHome,
       page: () => MyHomePage(),
+      binding: HomeBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.location,
+      page: () => LocationPage(),
       binding: HomeBinding(),
     ),
   ];

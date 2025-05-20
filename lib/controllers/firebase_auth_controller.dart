@@ -5,18 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseAuthController extends GetxController {
+  RxString token = ''.obs;
+
   RxBool isLoading = false.obs;
   login(email, password) async {
     isLoading.value = true;
-    print(' =  = = = = = = = == == = ${isLoading.value}');
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      if (userCredential.user != null) {
+      if (userCredential.user?.uid != null) {
+        token.value = userCredential.user!.uid;
+
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('token', token.toString());
+
         Get.offAllNamed(AppRoutes.myHome);
+
         Get.snackbar(
           'Success',
           'Login Success',
@@ -32,7 +41,6 @@ class FirebaseAuthController extends GetxController {
       print(e);
     } finally {
       isLoading.value = false;
-      print('finally =  = = = = = = = == == = ${isLoading.value}');
     }
   }
 
@@ -48,7 +56,12 @@ class FirebaseAuthController extends GetxController {
         idToken: googleAuth?.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('token', UserCredential.user!.uid);
       Get.offAllNamed(AppRoutes.myHome);
       Get.snackbar(
         'Success',

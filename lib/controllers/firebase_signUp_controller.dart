@@ -3,6 +3,7 @@ import 'package:buybox_app/utils/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseSignupController extends GetxController {
   RxBool isLoading = false.obs;
@@ -18,11 +19,15 @@ class FirebaseSignupController extends GetxController {
 
       String uid = credential.user!.uid;
 
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('token', uid);
+
       await _firestore.collection('users').doc(uid).set({'userName': userName});
 
       //navigate
 
       Get.offAllNamed(AppRoutes.myHome);
+
       Get.snackbar(
         "Success",
         "Register Success",

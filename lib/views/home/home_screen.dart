@@ -1,11 +1,10 @@
+import 'dart:async';
+
 import 'package:buybox_app/controllers/home_page_controller.dart';
-import 'package:buybox_app/route/app_routes.dart';
+import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
-import 'package:buybox_app/utils/components/bottom_navigationbar.dart';
 import 'package:buybox_app/utils/components/image_slider.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -19,16 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
-
   final HomePageController _controller = Get.find();
+  final SearchItemsController _controller1 = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _controller.getLocation();
+    Timer(Duration(seconds: 3), () {
+      _controller.getLocation();
+    });
   }
 
   // final FirebaseFirestore _firestore = FirebaseFirestore.instance
@@ -68,9 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icon(Icons.waving_hand_rounded, color: AppColors.yellow),
                     ],
                   ),
-                  CircleAvatar(
-                    backgroundColor: AppColors.yellow,
-                    child: Icon(Icons.notifications, color: AppColors.white),
+                  GestureDetector(
+                    onTap: () {
+                      _controller1.fetchData('Fruit');
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.yellow,
+                      child: Icon(Icons.notifications, color: AppColors.white),
+                    ),
                   ),
                 ],
               ),
@@ -97,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20),
             ImageSlider(),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Row(
@@ -105,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('Categories', style: categoriesText()),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.arrow_forward_ios, size: 30),
+                    icon: Icon(Icons.arrow_forward_ios, size: 25),
                   ),
                 ],
               ),
@@ -116,18 +122,74 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(left: 25.0, right: 25),
                 child: Row(
                   spacing: 10,
-                  children: List.generate(8, (index) {
-                    return Container(
-                      width: 90,
-                      height: 110,
-                      decoration: BoxDecoration(
-                        color: AppColors.green,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        index.toString(),
-                        style: TextStyle(color: AppColors.white),
-                      ),
+                  children: List.generate(_controller.categoryImage.length, (
+                    index,
+                  ) {
+                    return Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: SizedBox(
+                            child: Container(
+                              width: 105,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: AppColors.green,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    index.toString(),
+                                    style: TextStyle(color: AppColors.white),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 30,
+                                        height: 13,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.yellow,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            topRight: Radius.elliptical(40, 20),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 75,
+                                        height: 13,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.yellow,
+                                          borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(15),
+                                            topLeft: Radius.elliptical(40, 20),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: -4,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: Image.asset(
+                              _controller.categoryImage[index],
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ),
@@ -144,24 +206,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 horizontal: 25.0,
                 vertical: 0,
               ),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 4,
-                    color: AppColors.green,
-                    child: Column(children: [Text('1')]),
-                  );
-                },
-              ),
+              child: Obx(() {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: _controller1.product.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 4,
+                      color: AppColors.green,
+                      child: Column(
+                        children: [
+                          Image.network(
+                            _controller1.product[index].productPhoto.toString(),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
             SizedBox(height: 20),
           ],
