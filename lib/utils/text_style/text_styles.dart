@@ -27,11 +27,27 @@ TextStyle nameText() {
   );
 }
 
-TextStyle categoriesText() {
+TextStyle categories() {
   return TextStyle(
     fontSize: 20,
     color: Colors.grey.shade700,
     fontWeight: FontWeight.bold,
+  );
+}
+
+TextStyle categoriesText() {
+  return TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 15,
+  );
+}
+
+TextStyle categoriesItems() {
+  return TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
   );
 }
 

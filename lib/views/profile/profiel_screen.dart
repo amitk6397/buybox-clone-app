@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/get_firebasestore_data.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
@@ -8,13 +9,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfielScreen extends StatelessWidget {
-  const ProfielScreen({super.key});
+  final GetFirebasestoreData _controller = Get.put(GetFirebasestoreData());
 
   singOut() async {
     final pref = await SharedPreferences.getInstance();
     pref.clear();
-    // await GoogleSignIn().signOut();
-    // await FirebaseAuth.instance.signOut();
+
     Get.offAllNamed(AppRoutes.login);
   }
 
@@ -42,26 +42,41 @@ class ProfielScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: AppColors.green,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: AppColors.yellow,
+                Card(
+                  color: AppColors.white ,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: AppColors.green,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 50,
+                              color: AppColors.yellow,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 40),
+                        Column(
+                          children: [
+                            Obx(
+                              () => Text(
+                                _controller.name.value,
+                                style: startPage(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 40),
-                    Column(children: [Text('Amit kumar', style: startPage())]),
-                  ],
+                  ),
                 ),
                 SizedBox(height: 25),
                 Container(

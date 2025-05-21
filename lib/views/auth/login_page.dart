@@ -128,7 +128,25 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                       ),
-                      SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Get.toNamed(AppRoutes.forgotPassword);
+                            },
+                            child: Text(
+                              'Forgot Password',
+                              style: TextStyle(
+                                color: AppColors.green,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
                       button('Sign in', () {
                         _controller.login(
                           emailController.text.trim(),

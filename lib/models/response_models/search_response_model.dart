@@ -78,7 +78,7 @@ class Products {
   bool? isPrime;
   bool? climatePledgeFriendly;
   String? salesVolume;
-  Null? delivery;
+  String? delivery;
   bool? hasVariations;
   String? productBadge;
   String? couponText;

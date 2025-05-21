@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/get_firebasestore_data.dart';
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
@@ -9,5 +10,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut(() => NavigationbarController());
     Get.lazyPut(() => HomePageController());
     Get.lazyPut(() => SearchItemsController());
+    Get.lazyPut(() => GetFirebasestoreData());
   }
 }
