@@ -80,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      Get.toNamed(AppRoutes.details);
+                    },
                     child: CircleAvatar(
                       backgroundColor: AppColors.yellow,
                       child: Icon(Icons.notifications, color: AppColors.white),

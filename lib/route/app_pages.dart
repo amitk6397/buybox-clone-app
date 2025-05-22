@@ -8,6 +8,7 @@ import 'package:buybox_app/views/auth/login_page.dart';
 import 'package:buybox_app/views/auth/signIn_page.dart';
 import 'package:buybox_app/views/category/all_category_items.dart';
 import 'package:buybox_app/views/category/categories_page.dart';
+import 'package:buybox_app/views/category/details_page.dart';
 import 'package:buybox_app/views/home/home_screen.dart';
 import 'package:buybox_app/views/location_page.dart';
 import 'package:buybox_app/views/start_page/start_pages.dart';
@@ -59,5 +60,6 @@ class AppPages {
     // Categories Screen
     GetPage(name: AppRoutes.category, page: () => CategoriesPage()),
     GetPage(name: AppRoutes.allItems, page: () => AllCategoryItems()),
+    GetPage(name: AppRoutes.details, page: () => DetailsPage()),
   ];
 }
