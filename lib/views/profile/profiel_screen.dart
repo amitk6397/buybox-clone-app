@@ -1,6 +1,9 @@
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
+import 'package:buybox_app/controllers/profile_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
+import 'package:buybox_app/utils/components/common_button.dart';
+import 'package:buybox_app/utils/components/profile_components.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfielScreen extends StatelessWidget {
   final GetFirebasestoreData _controller = Get.put(GetFirebasestoreData());
-
+  final ProfileController _controller1 = Get.put(ProfileController());
   singOut() async {
     final pref = await SharedPreferences.getInstance();
     pref.clear();
@@ -43,7 +46,7 @@ class ProfielScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 10),
                 Card(
-                  color: AppColors.white ,
+                  color: AppColors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
@@ -92,7 +95,20 @@ class ProfielScreen extends StatelessWidget {
                         label: 'Personal Info',
                         icon: Icons.person,
                         color: Colors.deepOrange,
-                        onTap: () {},
+                        onTap: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          _controller1.setDate(
+                            prefs.getString('date').toString(),
+                          );
+                          _controller1.setGender(
+                            prefs.getString('gender').toString(),
+                          );
+                          _controller1.getAddress(
+                            prefs.getString('address').toString(),
+                          );
+                          print(prefs.getString('address').toString());
+                          Get.toNamed(AppRoutes.personalInfo);
+                        },
                       ),
                       ListtileWidget(
                         label: 'Addresses',
@@ -181,7 +197,48 @@ class ProfielScreen extends StatelessWidget {
                         icon: Icons.logout,
                         color: Colors.deepOrange,
                         onTap: () {
-                          singOut();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Logout Confirmation",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                content: Text(
+                                  "You are about to log out of your account. This will end your session, and you'll need to log in again to access your data. Do you want to continue?",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                actions: [
+                                  textButton(
+                                    () {
+                                      Get.back();
+                                    },
+                                    'Cancel',
+                                    Colors.black,
+                                    16,
+                                  ),
+                                  textButton(
+                                    () {
+                                      singOut();
+                                      Get.snackbar(
+                                        "LogOut",
+                                        'You have successfully logged out',
+                                        backgroundColor:
+                                            AppColors.successMessageColor,
+                                      );
+                                    },
+                                    'Ok',
+                                    Colors.black,
+                                    16,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                     ],
@@ -191,47 +248,6 @@ class ProfielScreen extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ListtileWidget extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  ListtileWidget({
-    required this.label,
-    required this.color,
-    required this.icon,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Icon(icon, color: color),
-        ),
-        title: Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-
-            fontWeight: FontWeight.bold,
-            color: AppColors.white,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios_outlined,
-          color: AppColors.white,
-          size: 20,
         ),
       ),
     );

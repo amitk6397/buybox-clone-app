@@ -4,6 +4,7 @@ class AppColors {
   //background colors
 
   static const Color green = Color(0xFF009688);
+  static const Color ligthGreen = Color(0xFF4CAF50);
   static const Color white = Colors.white;
   static const Color grey = Colors.grey;
   static const Color yellow = Color(0xFFFFC107);

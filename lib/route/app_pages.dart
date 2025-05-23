@@ -1,5 +1,6 @@
 import 'package:buybox_app/binding/auth_binding.dart';
 import 'package:buybox_app/binding/home_binding.dart';
+import 'package:buybox_app/binding/profile_binding.dart';
 import 'package:buybox_app/main.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/splash_screen.dart';
@@ -11,6 +12,8 @@ import 'package:buybox_app/views/category/categories_page.dart';
 import 'package:buybox_app/views/category/details_page.dart';
 import 'package:buybox_app/views/home/home_screen.dart';
 import 'package:buybox_app/views/location_page.dart';
+import 'package:buybox_app/views/profile/personalInfo_page.dart';
+import 'package:buybox_app/views/search_products.dart';
 import 'package:buybox_app/views/start_page/start_pages.dart';
 
 import 'package:get/get.dart';
@@ -61,5 +64,15 @@ class AppPages {
     GetPage(name: AppRoutes.category, page: () => CategoriesPage()),
     GetPage(name: AppRoutes.allItems, page: () => AllCategoryItems()),
     GetPage(name: AppRoutes.details, page: () => DetailsPage()),
+
+    // Profile Screen
+    GetPage(
+      name: AppRoutes.personalInfo,
+      page: () => PersonalInfoPage(),
+      binding: ProfileBinding(),
+    ),
+
+    // Search Screeen
+    GetPage(name: AppRoutes.search, page: () => SearchProducts()),
   ];
 }

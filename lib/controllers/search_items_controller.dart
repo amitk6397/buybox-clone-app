@@ -14,9 +14,9 @@ class SearchItemsController extends GetxController {
 
     try {
       final response = await _auth.fetchData(query);
-
-      _product.assignAll(response);
-      print('Pesponse == = = = = = = = $response');
+      if (!response.contains(_product)) {
+        _product.assignAll(response);
+      }
     } catch (e) {
       print('error mx kjn = = = = = = = = =  $e');
       Get.snackbar(

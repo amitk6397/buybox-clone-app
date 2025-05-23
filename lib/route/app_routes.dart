@@ -21,4 +21,12 @@ class AppRoutes {
   static const String category = '/category';
   static const String allItems = '/allItems';
   static const String details = '/details';
+
+  // Profile Screens
+
+  static const String personalInfo = '/personalInfo';
+
+  // Serach Screen
+
+  static const String search = '/search';
 }

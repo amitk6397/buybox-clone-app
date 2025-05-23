@@ -95,7 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _controller1.product.clear();
+                  Get.toNamed(AppRoutes.search);
+                },
                 child: Container(
                   height: 60,
                   decoration: BoxDecoration(
@@ -144,22 +147,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: List.generate(_controller.categoryImage.length, (
                     index,
                   ) {
-                    return Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: SizedBox(
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.toNamed(
-                                  AppRoutes.allItems,
-                                  parameters: {
-                                    'title':
-                                        _controller
-                                            .categoryImage[index]['name'],
-                                  },
-                                );
-                              },
+                    return GestureDetector(
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.allItems,
+                          parameters: {
+                            'title': _controller.categoryImage[index]['name'],
+                          },
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: SizedBox(
                               child: Container(
                                 width: 105,
                                 height: 120,
@@ -226,25 +227,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 20,
-                          top: -5,
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Image.asset(
-                                  _controller.categoryImage[index]['path'],
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
+                          Positioned(
+                            left: 20,
+                            top: -5,
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Image.asset(
+                                    _controller.categoryImage[index]['path'],
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   }),
                 ),

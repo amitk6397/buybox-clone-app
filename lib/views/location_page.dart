@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
+import 'package:buybox_app/utils/components/common_button.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,12 +33,18 @@ class _LocationPageState extends State<LocationPage> {
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
+        leading: appBackButton(AppColors.white, Icons.arrow_back, () async {
+          final prefs = await SharedPreferences.getInstance();
+          if (prefs.getString('address') == null) {
+            Get.snackbar(
+              'Location',
+              "Please click confirm \$ continue button",
+              backgroundColor: AppColors.errorMessageColor,
+            );
+          } else {
             Get.back();
-          },
-          icon: Icon(Icons.arrow_back, color: AppColors.white, size: 28),
-        ),
+          }
+        }),
         title: Text('Location', style: appBarText()),
         backgroundColor: AppColors.green,
       ),

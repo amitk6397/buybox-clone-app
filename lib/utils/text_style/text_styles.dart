@@ -60,3 +60,9 @@ TextStyle appBarText() {
     fontWeight: FontWeight.bold,
   );
 }
+
+//Search screen Text
+
+TextStyle searchScreenText() {
+  return TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+}

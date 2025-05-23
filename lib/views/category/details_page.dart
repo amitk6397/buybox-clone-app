@@ -3,6 +3,7 @@ import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 
 import 'package:buybox_app/utils/components/bottom_sheet_bar.dart';
+import 'package:buybox_app/utils/components/common_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,24 +33,10 @@ class _DetailsPageState extends State<DetailsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                        color: AppColors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.search,
-                        size: 30,
-                        color: AppColors.white,
-                      ),
-                    ),
+                    appBackButton(AppColors.white, Icons.arrow_back, () {
+                      Get.back();
+                    }),
+                    appBackButton(AppColors.white, Icons.search, () {}),
                   ],
                 ),
                 Align(
