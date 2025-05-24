@@ -45,7 +45,7 @@ class _LocationPageState extends State<LocationPage> {
             Get.back();
           }
         }),
-        title: Text('Location', style: appBarText()),
+        title: Text('Location', style: appBarText(AppColors.white)),
         backgroundColor: AppColors.green,
       ),
       body: Obx(() {

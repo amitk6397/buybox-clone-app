@@ -29,4 +29,9 @@ class AppRoutes {
   // Serach Screen
 
   static const String search = '/search';
+
+  // Order Page Payment Page
+
+  static const String order = '/order';
+  static const String payment = '/payment';
 }

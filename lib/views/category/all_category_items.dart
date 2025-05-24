@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
@@ -18,6 +19,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
   final arg = Get.parameters;
 
   final SearchItemsController _controller = Get.put(SearchItemsController());
+  final AddRemoveCartController _controller1 = Get.find();
 
   @override
   void initState() {
@@ -34,7 +36,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
         leading: appBackButton(AppColors.white, Icons.arrow_back, () {
           Get.back();
         }),
-        title: Text('${arg['title']}', style: appBarText()),
+        title: Text('${arg['title']}', style: appBarText(AppColors.white)),
         backgroundColor: AppColors.green,
       ),
       body: SingleChildScrollView(
@@ -50,7 +52,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
                       child: Divider(),
                     ),
                     SizedBox(height: 10),
-                    itemsWidget(_controller, mediaQuery),
+                    itemsWidget(_controller, _controller1, mediaQuery),
                     SizedBox(height: 20),
                   ],
                 )
@@ -58,7 +60,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ImageSlider(),
-                    itemsWidget(_controller, mediaQuery),
+                    itemsWidget(_controller, _controller1, mediaQuery),
                   ],
                 ),
       ),

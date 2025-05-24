@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/controllers/serach_screen_item_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
@@ -16,8 +17,9 @@ class SearchProducts extends StatefulWidget {
 
 class _SearchProductsState extends State<SearchProducts> {
   final SearchItemsController _controller1 = Get.put(SearchItemsController());
-  final SerachScreenItemController _controller = Get.put(
-    SerachScreenItemController(),
+  final SerachScreenItemController _controller = Get.find();
+  final AddRemoveCartController _controller2 = Get.put(
+    AddRemoveCartController(),
   );
   final TextEditingController searchController = TextEditingController();
   final focusNode = FocusNode();
@@ -69,7 +71,7 @@ class _SearchProductsState extends State<SearchProducts> {
                         focusNode: focusNode,
                         controller: searchController,
                         onSubmitted: (String value) {
-                          //  _controller1.fetchData(value.trim());
+                          _controller1.fetchData(value.trim());
                           _controller.addText(value.trim());
                           searchController.text = '';
                           _controller.iconChange(false);
@@ -241,7 +243,7 @@ class _SearchProductsState extends State<SearchProducts> {
               ),
             ),
             SizedBox(height: 15),
-            itemsWidget(_controller1, mediaQuery),
+            itemsWidget(_controller1, _controller2, mediaQuery),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -93,6 +94,7 @@ Widget card(HomePageController _controller, int index) {
 
 Widget itemsWidget(
   SearchItemsController _controller,
+  AddRemoveCartController _controller1,
   MediaQueryData mediaQuery,
 ) {
   return Padding(
@@ -203,7 +205,14 @@ Widget itemsWidget(
                           ],
                         ),
                       ),
-                      addToCart(),
+                      addToCart(() {
+                        _controller1.addCartItems(
+                          index,
+                          _controller.product[index].productTitle.toString(),
+                          _controller.product[index].productPrice.toString(),
+                          _controller.product[index].productPhoto.toString(),
+                        );
+                      }),
                     ],
                   ),
                 ),

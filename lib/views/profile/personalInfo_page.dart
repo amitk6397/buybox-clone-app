@@ -76,7 +76,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         leading: appBackButton(AppColors.white, Icons.arrow_back, () {
           Get.back();
         }),
-        title: Text('Personal Info', style: appBarText()),
+        title: Text('Personal Info', style: appBarText(AppColors.white)),
         backgroundColor: AppColors.green,
       ),
       body: Padding(

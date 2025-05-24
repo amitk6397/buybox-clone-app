@@ -11,6 +11,7 @@ TextStyle startPage() {
 
 TextStyle nextButton() {
   return TextStyle(
+    letterSpacing: 1,
     fontSize: 16,
     color: AppColors.white,
     fontWeight: FontWeight.w500,
@@ -53,16 +54,18 @@ TextStyle categoriesItems() {
 
 //appBar text style
 
-TextStyle appBarText() {
-  return TextStyle(
-    fontSize: 20,
-    color: AppColors.white,
-    fontWeight: FontWeight.bold,
-  );
+TextStyle appBarText(Color color) {
+  return TextStyle(fontSize: 20, color: color, fontWeight: FontWeight.bold);
 }
 
 //Search screen Text
 
 TextStyle searchScreenText() {
   return TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+}
+
+// order screen
+
+TextStyle deliveryText() {
+  return TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
 }
