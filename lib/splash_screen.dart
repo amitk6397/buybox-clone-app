@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
     });
@@ -46,19 +45,24 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 48),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.green,
                 image: DecorationImage(
-                  image: AssetImage('assets/images/cooking_background.webp'),
+                  image: AssetImage('assets/images/background.jpg'),
                   fit: BoxFit.cover,
                   opacity: 0.1,
                 ),
               ),
 
-              child: Center(child: Image.asset('assets/images/logo.png')),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  color: AppColors.green,
+                  colorBlendMode: BlendMode.dst,
+                ),
+              ),
             ),
           ),
         ],

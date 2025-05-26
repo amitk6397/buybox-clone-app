@@ -1,10 +1,12 @@
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/profile_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/common_button.dart';
 import 'package:buybox_app/utils/components/profile_components.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
+import 'package:buybox_app/views/profile/personalInfo_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfielScreen extends StatelessWidget {
   final GetFirebasestoreData _controller = Get.put(GetFirebasestoreData());
   final ProfileController _controller1 = Get.put(ProfileController());
+  final NavigationbarController _controller2 = Get.find();
   singOut() async {
     final pref = await SharedPreferences.getInstance();
     pref.clear();
@@ -106,8 +109,17 @@ class ProfielScreen extends StatelessWidget {
                           _controller1.getAddress(
                             prefs.getString('address').toString(),
                           );
-                          print(prefs.getString('address').toString());
-                          Get.toNamed(AppRoutes.personalInfo);
+
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            _controller2
+                                .navigatorKeys[_controller2.index.value]
+                                .currentState!
+                                .push(
+                                  MaterialPageRoute(
+                                    builder: (_) => PersonalInfoPage(),
+                                  ),
+                                );
+                          });
                         },
                       ),
                       ListtileWidget(

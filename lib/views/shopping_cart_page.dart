@@ -1,8 +1,11 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
+import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/common_button.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
+import 'package:buybox_app/views/order/address_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +20,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   final AddRemoveCartController _controller = Get.put(
     AddRemoveCartController(),
   );
+  final OrderController _controller1 = Get.put(OrderController());
+  final NavigationbarController _controller2 = Get.find();
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -87,7 +92,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           ),
           GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.order);
+              _controller1.getData();
+              _controller1.changeWidget(false);
+              final navKey =
+                  _controller2.navigatorKeys[_controller2.index.value];
+              navKey.currentState!.push(
+                MaterialPageRoute(builder: (_) => AddressScreen()),
+              );
             },
             child: Container(
               width: mediaQuery.size.width,

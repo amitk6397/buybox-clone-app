@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
+import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/controllers/profile_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/common_button.dart';
@@ -18,10 +20,15 @@ class PersonalInfoPage extends StatefulWidget {
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final GetFirebasestoreData _controller1 = Get.put(GetFirebasestoreData());
+  final NavigationbarController _controller3 = Get.find();
+  final ProfileController _controller2 = Get.find();
+
   final user = FirebaseAuth.instance.currentUser!;
 
   TextEditingController genderController = TextEditingController();
   TextEditingController dobController = TextEditingController();
+
+  TextEditingController textcontroller = TextEditingController();
 
   final ProfileController _controller = Get.find();
 
@@ -74,7 +81,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     return Scaffold(
       appBar: AppBar(
         leading: appBackButton(AppColors.white, Icons.arrow_back, () {
-          Get.back();
+          _controller3.navigatorKeys[_controller3.index.value].currentState
+              ?.maybePop();
         }),
         title: Text('Personal Info', style: appBarText(AppColors.white)),
         backgroundColor: AppColors.green,
@@ -82,37 +90,135 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Obx(() {
-          return Column(
-            children: [
-              Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColors.green,
-                  shape: BoxShape.circle,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: AppColors.green,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(
+                    '',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(child: Text('No Select Image'));
+                    },
+                  ),
                 ),
-                child: Image.asset(
-                  '',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Center(child: Text('No Select Image'));
-                  },
+                SizedBox(height: 15),
+                editUser('Name', _controller1.name.value, () {
+                  updateDialog(
+                    context,
+                    'Change Your Name',
+                    'name',
+                    textcontroller,
+                    _controller2,
+                    _controller1,
+                  );
+                }, Icons.edit),
+
+                editUser('Email', "${user.email}", () {}, null),
+
+                editUser('D-O-B', _controller.date.value ?? '', () {
+                  textcontroller.text = '';
+                  updateDialog(
+                    context,
+                    'Change Your D-O-B/Add',
+                    'DD/MM/YY',
+                    textcontroller,
+                    _controller2,
+                    null,
+                  );
+                }, Icons.edit),
+
+                editUser('Gender', _controller.gender.value ?? '', () {
+                  textcontroller.text = '';
+                  updateDialog(
+                    context,
+                    'Change Your Gender/Add',
+                    'Gender',
+                    textcontroller,
+                    _controller2,
+                    null,
+                  );
+                }, Icons.edit),
+
+                editUser(
+                  'Address',
+                  _controller.address.value ?? '',
+                  () {},
+                  null,
                 ),
-              ),
-              SizedBox(height: 15),
-              editUser('Name', _controller1.name.value, () {}),
-
-              editUser('Email', "${user.email}", () {}),
-
-              editUser('D-O-B', _controller.date.value, () {}),
-
-              editUser('Gender', _controller.gender.value, () {}),
-
-              editUser('Address', _controller.address.value ?? '', () {}),
-            ],
+              ],
+            ),
           );
         }),
       ),
     );
   }
+}
+
+updateDialog(
+  BuildContext context,
+  String label,
+  String hintText,
+  TextEditingController controller,
+  ProfileController controller1,
+  GetFirebasestoreData? controller2,
+) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        content: SizedBox(
+          height: 120,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: TextStyle(fontSize: 18)),
+              SizedBox(height: 20),
+              textfield(hintText, null, controller),
+            ],
+          ),
+        ),
+
+        actions: [
+          textButton(
+            () {
+              Get.back();
+            },
+            'Cancel',
+            Colors.black,
+            16,
+          ),
+          textButton(
+            () {
+              if (controller.text.trim().isEmpty) {
+                Get.snackbar(
+                  'UserName',
+                  'Please enter your name',
+                  backgroundColor: AppColors.errorMessageColor,
+                );
+              } else {
+                controller1.changeName(controller.text);
+                controller2!.fetchData();
+                Get.snackbar(
+                  'Success',
+                  'Update your name',
+                  backgroundColor: AppColors.successMessageColor,
+                );
+                Get.back();
+              }
+            },
+            'Add',
+            Colors.black,
+            16,
+          ),
+        ],
+      );
+    },
+  );
 }

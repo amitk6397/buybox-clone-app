@@ -64,8 +64,8 @@ Widget addressTextFeild(
 
       style: TextStyle(fontSize: 18),
       decoration: InputDecoration(
-        fillColor: _focusNode.hasFocus ? AppColors.white : Colors.grey.shade300,
-        filled: _focusNode.hasFocus ? false : true,
+        fillColor: Colors.grey.shade300,
+        filled: true,
         hintText: lable,
 
         hintStyle: TextStyle(fontSize: 15, color: AppColors.grey),

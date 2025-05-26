@@ -11,7 +11,7 @@ class NavigationbarController extends GetxController {
 
   RxInt get index => _index;
 
-  RxList<Widget> _screenList =
+  final RxList<Widget> _screenList =
       [
         HomeScreen(),
         CategoriesPage(),
@@ -22,7 +22,23 @@ class NavigationbarController extends GetxController {
 
   RxList<Widget> get screenList => _screenList;
 
+  final List<GlobalKey<NavigatorState>> navigatorKeys = List.generate(
+    5,
+    (_) => GlobalKey<NavigatorState>(),
+  );
+
   void changeScreen(value) {
     _index.value = value;
+  }
+
+  Future<bool> onWillPop() async {
+    final isFirstRouteInCurrentTab =
+        !await navigatorKeys[index.value].currentState!.maybePop();
+    if (isFirstRouteInCurrentTab) {
+      // If user is on first route of current tab, maybe exit app or show a dialog
+      return true; // let system handle back button
+    }
+    // Else pop nested navigator
+    return false;
   }
 }

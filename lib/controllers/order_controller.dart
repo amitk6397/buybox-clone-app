@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
+  // change Widget
+
   RxBool _isflag = false.obs;
 
   RxBool get isFlag => _isflag;
@@ -32,6 +34,7 @@ class OrderController extends GetxController {
   // Store date in fireStore
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var uid = FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> storeData(
     String name,
@@ -43,7 +46,7 @@ class OrderController extends GetxController {
     String country,
   ) async {
     try {
-      var uid = FirebaseAuth.instance.currentUser!.uid;
+      //Store data
 
       _firestore.collection('users').doc(uid).collection('addresses').add({
         'name': name,
@@ -55,6 +58,8 @@ class OrderController extends GetxController {
         'country': country,
         'createdAt': FieldValue.serverTimestamp(),
       });
+
+      // get data
     } catch (e) {
       Get.snackbar(
         'Address',
@@ -62,5 +67,56 @@ class OrderController extends GetxController {
         backgroundColor: AppColors.errorMessageColor,
       );
     }
+  }
+
+  // get data
+  RxList<Map<String, dynamic>> _getAddress = <Map<String, dynamic>>[].obs;
+
+  RxList<Map<String, dynamic>> get getAddress => _getAddress;
+
+  Future<void> getData() async {
+    try {
+      final document =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('addresses')
+              .orderBy('createdAt', descending: true)
+              .get();
+
+      if (document.docs.isNotEmpty) {
+        _getAddress.value = document.docs.map((doc) => doc.data()).toList();
+        print('getAddress == == $getAddress');
+      } else {
+        print('Document is not exists');
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        '${e.toString()}',
+        backgroundColor: AppColors.errorMessageColor,
+      );
+    }
+  }
+
+  //save address
+
+  RxBool _isSava = false.obs;
+
+  RxBool get isSava => _isSava;
+
+  void saveData() {
+    isSava.value = !isSava.value;
+
+    print('isSava === == = $isSava');
+  }
+
+  // select address
+
+  RxInt _selectIndex = 0.obs;
+  RxInt get selectIndex => _selectIndex;
+
+  void selectAddress(index) {
+    _selectIndex.value = index;
   }
 }

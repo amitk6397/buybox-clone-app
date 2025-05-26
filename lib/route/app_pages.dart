@@ -66,7 +66,7 @@ class AppPages {
 
     // Categories Screen
     GetPage(name: AppRoutes.category, page: () => CategoriesPage()),
-    GetPage(name: AppRoutes.allItems, page: () => AllCategoryItems()),
+
     GetPage(name: AppRoutes.details, page: () => DetailsPage()),
 
     // Profile Screen

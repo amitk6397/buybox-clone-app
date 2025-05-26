@@ -100,125 +100,118 @@ Widget itemsWidget(
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0),
     child: Obx(() {
-      return _controller.isLoading.value
-          ? Center(child: CircularProgressIndicator())
-          : GridView.builder(
-            padding: EdgeInsets.all(0),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount:
-                  mediaQuery.orientation == Orientation.portrait ? 2 : 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio:
-                  mediaQuery.orientation == Orientation.portrait ? 0.7 : 0.9,
-            ),
-            itemCount: _controller.product.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Get.toNamed(
-                    AppRoutes.details,
-                    parameters: {
-                      'index': index.toString(),
-                      'image':
-                          _controller.product[index].productPhoto.toString(),
-                      'title':
-                          _controller.product[index].productTitle.toString(),
-                      'Price':
-                          _controller.product[index].productPrice!.toString(),
-                      'originalPrice':
-                          _controller.product[index].productOriginalPrice!
-                              .toString(),
+      return GridView.builder(
+        padding: EdgeInsets.all(0),
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount:
+              mediaQuery.orientation == Orientation.portrait ? 2 : 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio:
+              mediaQuery.orientation == Orientation.portrait ? 0.7 : 0.9,
+        ),
+        itemCount: _controller.product.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed(
+                AppRoutes.details,
+                parameters: {
+                  'index': index.toString(),
+                  'image': _controller.product[index].productPhoto.toString(),
+                  'title': _controller.product[index].productTitle.toString(),
+                  'Price': _controller.product[index].productPrice!.toString(),
+                  'originalPrice':
+                      _controller.product[index].productOriginalPrice!
+                          .toString(),
 
-                      'unit_count':
-                          _controller.product[index].unitCount.toString(),
-                    },
-                  );
+                  'unit_count': _controller.product[index].unitCount.toString(),
                 },
-                child: Card(
-                  elevation: 4,
-                  color: AppColors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.network(
-                        _controller.product[index].productPhoto.toString(),
-                        height: 100,
-                        fit: BoxFit.cover,
+              );
+            },
+            child: Card(
+              elevation: 4,
+              color: AppColors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.network(
+                    _controller.product[index].productPhoto.toString(),
+                    height: 100,
+                    fit: BoxFit.cover,
 
-                        errorBuilder: (context, error, stackTrace) {
-                          return SizedBox(
-                            height: 100,
-                            child: Center(child: Icon(Icons.error)),
-                          );
-                        },
+                    errorBuilder: (context, error, stackTrace) {
+                      return SizedBox(
+                        height: 100,
+                        child: Center(child: Icon(Icons.error)),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      _controller.product[index].productTitle!
+                          .replaceAll('Fresh', '')
+                          .split(',')[0]
+                          .toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.grey,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 4,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 4,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _controller.product[index].productPrice.toString(),
                         ),
-                        child: Text(
-                          _controller.product[index].productTitle!
-                              .replaceAll('Fresh', '')
-                              .split(',')[0]
-                              .toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 4,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Row(
                           children: [
                             Text(
-                              _controller.product[index].productPrice
-                                  .toString(),
+                              '(234)',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.grey,
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  '(234)',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.grey,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.star_rounded,
-                                  size: 20,
-                                  color: AppColors.yellow,
-                                ),
-                              ],
+                            Icon(
+                              Icons.star_rounded,
+                              size: 20,
+                              color: AppColors.yellow,
                             ),
                           ],
                         ),
-                      ),
-                      addToCart(() {
-                        _controller1.addCartItems(
-                          index,
-                          _controller.product[index].productTitle.toString(),
-                          _controller.product[index].productPrice.toString(),
-                          _controller.product[index].productPhoto.toString(),
-                        );
-                      }),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                  addToCart(() {
+                    _controller1.addCartItems(
+                      index,
+                      _controller.product[index].productTitle.toString(),
+                      _controller.product[index].productPrice.toString(),
+                      _controller.product[index].productPhoto.toString(),
+                    );
+                  }),
+                ],
+              ),
+            ),
           );
+        },
+      );
     }),
   );
 }

@@ -9,10 +9,13 @@ import 'package:buybox_app/utils/components/image_slider.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redacted/redacted.dart';
 
 class AllCategoryItems extends StatefulWidget {
   @override
   State<AllCategoryItems> createState() => _AllCategoryItemsState();
+  final String title;
+  AllCategoryItems({required this.title});
 }
 
 class _AllCategoryItemsState extends State<AllCategoryItems> {
@@ -25,7 +28,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller.fetchData(arg['title'].toString());
+    _controller.fetchData(widget.title);
   }
 
   @override
@@ -36,7 +39,7 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
         leading: appBackButton(AppColors.white, Icons.arrow_back, () {
           Get.back();
         }),
-        title: Text('${arg['title']}', style: appBarText(AppColors.white)),
+        title: Text(widget.title, style: appBarText(AppColors.white)),
         backgroundColor: AppColors.green,
       ),
       body: SingleChildScrollView(
@@ -52,7 +55,10 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
                       child: Divider(),
                     ),
                     SizedBox(height: 10),
-                    itemsWidget(_controller, _controller1, mediaQuery),
+                    itemsWidget(_controller, _controller1, mediaQuery).redacted(
+                      context: context,
+                      redact: _controller.isLoading.value,
+                    ),
                     SizedBox(height: 20),
                   ],
                 )

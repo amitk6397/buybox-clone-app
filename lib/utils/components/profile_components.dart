@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final ProfileController _controller = Get.put(ProfileController());
 
-Widget editUser(String title, String name, VoidCallback onTap) {
+Widget editUser(String title, String name, VoidCallback onTap, IconData? icon) {
   return Card(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
@@ -17,7 +17,7 @@ Widget editUser(String title, String name, VoidCallback onTap) {
         children: [
           Expanded(child: Text(title)),
           Expanded(child: Text(name)),
-          Expanded(child: IconButton(onPressed: onTap, icon: Icon(Icons.edit))),
+          Expanded(child: IconButton(onPressed: onTap, icon: Icon(icon))),
         ],
       ),
     ),
@@ -104,7 +104,7 @@ Widget alertContainer(
 
 Widget textfield(
   String hinttext,
-  Widget button,
+  Widget? button,
   TextEditingController _controller,
 ) {
   return TextFormField(

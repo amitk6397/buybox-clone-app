@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/address_screen_components.dart';
@@ -16,6 +17,7 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final OrderController _controller = Get.find();
+  final NavigationbarController _controller2 = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,11 +31,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   SizedBox(height: 50),
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    leading: appBackButton(
-                      Colors.black,
-                      Icons.arrow_back,
-                      () {},
-                    ),
+                    leading: appBackButton(Colors.black, Icons.arrow_back, () {
+                      _controller2
+                          .navigatorKeys[_controller2.index.value]
+                          .currentState
+                          ?.maybePop();
+                    }),
                     title: Text('Checkout', style: appBarText(Colors.black)),
                     trailing: appBackButton(
                       Colors.black,

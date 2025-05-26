@@ -72,20 +72,6 @@ class HomePageController extends GetxController {
 
   // category
 
-  // final RxList<String> _categoryImage =
-  //     [
-  //       'assets/category/fruit.jpg',
-  //       'assets/category/vegetable.jpg',
-  //       'assets/category/chiken.jpg',
-  //       'assets/category/items.jpg',
-  //       'assets/category/choco.jpg',
-  //       'assets/category/cloth.png',
-  //       'assets/category/mobile.jpg',
-  //       'assets/category/fruit.jpg',
-  //     ].obs;
-
-  // RxList<String> get categoryImage => _categoryImage;
-
   final RxList<Map<String, dynamic>> categoryImage =
       [
         {
