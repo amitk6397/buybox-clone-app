@@ -138,22 +138,21 @@ class ListtileWidget extends StatelessWidget {
       onTap: onTap,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey.shade200,
           child: Icon(icon, color: color),
         ),
         title: Text(
           label,
           style: TextStyle(
-            fontSize: 16,
-
-            fontWeight: FontWeight.bold,
-            color: AppColors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: AppColors.grey,
           ),
         ),
         trailing: Icon(
           Icons.arrow_forward_ios_outlined,
-          color: AppColors.white,
           size: 20,
+          color: AppColors.grey,
         ),
       ),
     );

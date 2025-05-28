@@ -11,16 +11,22 @@ class NavigationbarController extends GetxController {
 
   RxInt get index => _index;
 
-  final RxList<Widget> _screenList =
-      [
-        HomeScreen(),
-        CategoriesPage(),
-        ShoppingCartPage(),
-        FavoritesItemsPage(),
-        ProfielScreen(),
-      ].obs;
-
-  RxList<Widget> get screenList => _screenList;
+  Widget getPage(int i) {
+    switch (i) {
+      case 0:
+        return HomeScreen();
+      case 1:
+        return CategoriesPage();
+      case 2:
+        return ShoppingCartPage();
+      case 3:
+        return FavoritesItemsPage();
+      case 4:
+        return ProfielScreen();
+      default:
+        return HomeScreen();
+    }
+  }
 
   final List<GlobalKey<NavigatorState>> navigatorKeys = List.generate(
     5,
@@ -32,13 +38,18 @@ class NavigationbarController extends GetxController {
   }
 
   Future<bool> onWillPop() async {
-    final isFirstRouteInCurrentTab =
-        !await navigatorKeys[index.value].currentState!.maybePop();
-    if (isFirstRouteInCurrentTab) {
-      // If user is on first route of current tab, maybe exit app or show a dialog
-      return true; // let system handle back button
+    final currentNavigator = navigatorKeys[index.value].currentState;
+
+    if (currentNavigator != null && currentNavigator.canPop()) {
+      currentNavigator.pop();
+      return false;
     }
-    // Else pop nested navigator
-    return false;
+
+    if (index.value != 0) {
+      index.value = 0;
+      return false;
+    }
+
+    return true;
   }
 }

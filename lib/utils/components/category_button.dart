@@ -1,6 +1,22 @@
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+Widget addRemove(VoidCallback onAdd, VoidCallback onRemove, int count) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        icons(Icons.remove, onRemove, Colors.green.shade100, AppColors.green),
+        SizedBox(width: 8),
+        Text(count.toString()),
+        SizedBox(width: 8),
+        icons(Icons.add, onAdd, AppColors.green, AppColors.white),
+      ],
+    ),
+  );
+}
+
 Widget icons(
   IconData icon,
   VoidCallback onTap,
@@ -20,7 +36,7 @@ Widget icons(
   );
 }
 
-Widget addToCart(VoidCallback onTap) {
+Widget addToCart(MediaQueryData mediaQuery, VoidCallback onTap) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
     child: GestureDetector(
@@ -32,12 +48,14 @@ Widget addToCart(VoidCallback onTap) {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(
+              mediaQuery.orientation == Orientation.portrait ? 8.0 : 6.0,
+            ),
             child: Text(
               'Add to cart',
               style: TextStyle(
                 color: AppColors.green,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
             ),

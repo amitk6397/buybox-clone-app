@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
@@ -9,7 +10,6 @@ import 'package:buybox_app/utils/components/image_slider.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:redacted/redacted.dart';
 
 class AllCategoryItems extends StatefulWidget {
   @override
@@ -19,10 +19,9 @@ class AllCategoryItems extends StatefulWidget {
 }
 
 class _AllCategoryItemsState extends State<AllCategoryItems> {
-  final arg = Get.parameters;
-
   final SearchItemsController _controller = Get.put(SearchItemsController());
   final AddRemoveCartController _controller1 = Get.find();
+  final NavigationbarController _controller2 = Get.find();
 
   @override
   void initState() {
@@ -37,39 +36,63 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
     return Scaffold(
       appBar: AppBar(
         leading: appBackButton(AppColors.white, Icons.arrow_back, () {
-          Get.back();
+          _controller2.navigatorKeys[_controller2.index.value].currentState
+              ?.maybePop();
         }),
-        title: Text(widget.title, style: appBarText(AppColors.white)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.toNamed(AppRoutes.search);
+            },
+            icon: Icon(Icons.search, size: 28, color: AppColors.white),
+          ),
+          SizedBox(width: 10),
+        ],
+        title: Text(
+          "${widget.title}(${_controller.product.length})",
+          style: appBarText(AppColors.white),
+        ),
         backgroundColor: AppColors.green,
       ),
-      body: SingleChildScrollView(
-        child:
-            mediaQuery.orientation == Orientation.portrait
-                ? Column(
+      body:
+          mediaQuery.orientation == Orientation.portrait
+              ? SingleChildScrollView(
+                child: Column(
                   children: [
-                    SizedBox(height: 25),
-                    ImageSlider(),
                     SizedBox(height: 10),
+                    ImageSlider(),
+                    SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Divider(),
                     ),
-                    SizedBox(height: 10),
-                    itemsWidget(_controller, _controller1, mediaQuery).redacted(
-                      context: context,
-                      redact: _controller.isLoading.value,
+                    SizedBox(height: 5),
+                    itemsWidget(
+                      _controller,
+                      _controller1,
+                      _controller2,
+                      mediaQuery,
                     ),
                     SizedBox(height: 20),
                   ],
-                )
-                : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ImageSlider(),
-                    itemsWidget(_controller, _controller1, mediaQuery),
-                  ],
                 ),
-      ),
+              )
+              : Row(
+                children: [
+                  Expanded(flex: 1, child: ImageSlider()),
+                  Expanded(
+                    flex: 2,
+                    child: SingleChildScrollView(
+                      child: itemsWidget(
+                        _controller,
+                        _controller1,
+                        _controller2,
+                        mediaQuery,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
     );
   }
 }

@@ -30,7 +30,7 @@ TextStyle nameText() {
 
 TextStyle categories() {
   return TextStyle(
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.grey.shade700,
     fontWeight: FontWeight.bold,
   );

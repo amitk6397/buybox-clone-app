@@ -1,10 +1,10 @@
-class CartRequestModel {
+class FavItemRequestModel {
   String id;
   String title;
   String image;
   String price;
 
-  CartRequestModel({
+  FavItemRequestModel({
     required this.id,
     required this.title,
     required this.price,

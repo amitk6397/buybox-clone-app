@@ -1,12 +1,12 @@
+import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
+import 'package:buybox_app/controllers/serach_screen_item_controller.dart';
 import 'package:buybox_app/route/app_pages.dart';
 import 'package:buybox_app/route/app_routes.dart';
-
 import 'package:buybox_app/utils/components/bottom_navigationbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,9 +14,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final directory = await getApplicationDocumentsDirectory();
+  Get.put(
+    SerachScreenItemController(),
+    permanent: true,
+  ); // 👈 stays alive across screens
+  Get.put(AddRemoveCartController(), permanent: true);
+  //Get.put(NavigationbarController(), permanent: true);
   Hive.init(directory.path);
-  // await FirebaseApi().initNotification();
-
   runApp(const MyApp());
 }
 
@@ -49,28 +53,37 @@ class _MyHomePageState extends State<MyHomePage> {
     NavigationbarController(),
   );
 
+  final AddRemoveCartController _controller1 = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _controller.onWillPop,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          final shouldPop = await _controller.onWillPop();
+          if (shouldPop) {
+            Navigator.of(context).maybePop();
+          }
+        }
+      },
       child: Scaffold(
         body: Obx(() {
           return IndexedStack(
             index: _controller.index.value,
             children: List.generate(
-              _controller.screenList.length,
+              5, // Assuming 5 tabs
               (i) => Navigator(
                 key: _controller.navigatorKeys[i],
-                onGenerateRoute: (routeSettings) {
-                  return MaterialPageRoute(
-                    builder: (_) => _controller.screenList[i],
-                  );
-                },
+                onGenerateRoute:
+                    (_) => MaterialPageRoute(
+                      builder: (_) => _controller.getPage(i),
+                    ),
               ),
             ),
           );
         }),
-        bottomNavigationBar: bottomNavigationBar(_controller),
+        bottomNavigationBar: bottomNavigationBar(_controller, _controller1),
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:buybox_app/controllers/home_page_controller.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
+import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/category_components.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
@@ -14,15 +16,19 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   final HomePageController _controller = Get.put(HomePageController());
+  final NavigationbarController _controller3 = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.arrow_back, size: 28),
-        ),
+        automaticallyImplyLeading: false,
+
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.more_vert, size: 28)),
+          SizedBox(width: 10),
+        ],
         title: Text(
           'Categories',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
@@ -50,37 +56,45 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount:
+                        mediaQuery.orientation == Orientation.portrait ? 2 : 4,
                     mainAxisSpacing: 50,
                     crossAxisSpacing: 20,
                   ),
                   children: [
-                    card(_controller, 0),
-                    card(_controller, 1),
-                    card(_controller, 2),
-                    card(_controller, 3),
+                    card(_controller, _controller3, 0),
+                    card(_controller, _controller3, 1),
+                    card(_controller, _controller3, 2),
+                    card(_controller, _controller3, 3),
                   ],
                 ),
                 SizedBox(height: 40),
-                SizedBox(height: 150, child: card(_controller, 4)),
+                SizedBox(
+                  height: 150,
+                  child: card(_controller, _controller3, 4),
+                ),
                 SizedBox(height: 40),
                 GridView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount:
+                        mediaQuery.orientation == Orientation.portrait ? 2 : 4,
                     mainAxisSpacing: 50,
                     crossAxisSpacing: 20,
                   ),
                   children: [
-                    card(_controller, 5),
-                    card(_controller, 6),
-                    card(_controller, 7),
-                    card(_controller, 8),
+                    card(_controller, _controller3, 5),
+                    card(_controller, _controller3, 6),
+                    card(_controller, _controller3, 7),
+                    card(_controller, _controller3, 8),
                   ],
                 ),
                 SizedBox(height: 40),
-                SizedBox(height: 150, child: card(_controller, 9)),
+                SizedBox(
+                  height: 150,
+                  child: card(_controller, _controller3, 9),
+                ),
               ],
             ),
           ),

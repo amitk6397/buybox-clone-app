@@ -1,15 +1,19 @@
+import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 
 import 'package:buybox_app/utils/components/category_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget bottomSheet(
-  String index,
-  String image,
+  String id,
+
   String title,
   String unit_count,
   String price,
   String originalPrice,
+  String image,
+  AddRemoveCartController _controller1,
 ) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 25),
@@ -24,7 +28,15 @@ Widget bottomSheet(
           SizedBox(height: 10),
           Center(child: Image.network(image, width: 250, height: 200)),
           SizedBox(height: 10),
-          container(index, title, unit_count, price, originalPrice),
+          container(
+            id,
+            title,
+            unit_count,
+            price,
+            originalPrice,
+            image,
+            _controller1,
+          ),
           SizedBox(height: 40),
         ],
       ),
@@ -33,11 +45,13 @@ Widget bottomSheet(
 }
 
 Widget container(
-  String index,
+  String id,
   String title,
   String unit_count,
   String price,
   String originalPrice,
+  String image,
+  AddRemoveCartController _controller1,
 ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +76,8 @@ Widget container(
           ),
         ),
       ),
-      SizedBox(height: 8),
-      Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      SizedBox(height: 5),
+      Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       SizedBox(height: 2),
       Text("$unit_count piece", style: TextStyle(color: AppColors.grey)),
       SizedBox(height: 5),
@@ -75,7 +89,7 @@ Widget container(
               Text(
                 price,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   color: Colors.grey.shade700,
                   fontWeight: FontWeight.bold,
                 ),
@@ -91,23 +105,21 @@ Widget container(
               ),
             ],
           ),
-          Row(
-            children: [
-              icons(
-                Icons.remove,
-                () {},
-                Colors.green.shade100,
-                AppColors.green,
-              ),
-              SizedBox(width: 8),
-              Text('0'),
-              SizedBox(width: 8),
-              icons(Icons.add, () {}, AppColors.green, AppColors.white),
-            ],
-          ),
+          Obx(() {
+            return addRemove(
+              () {
+                _controller1.addCartItems(id, title, price, image);
+                _controller1.addItem(id);
+              },
+              () {
+                _controller1.removeItem(id);
+              },
+              _controller1.getCount(id),
+            );
+          }),
         ],
       ),
-      SizedBox(height: 20),
+      SizedBox(height: 10),
       // Delivery
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,24 +130,28 @@ Widget container(
               SizedBox(width: 6),
               Text(
                 '4.6',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 3),
               Text(
                 '(89 reviews)',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          Icon(Icons.delivery_dining),
-
-          Text(
-            'FREE DELIVERY',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.green,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              Icon(Icons.delivery_dining, size: 18),
+              SizedBox(width: 5),
+              Text(
+                'FREE DELIVERY',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ],
       ),

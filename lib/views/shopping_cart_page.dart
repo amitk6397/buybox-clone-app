@@ -3,6 +3,7 @@ import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
+import 'package:buybox_app/utils/components/category_button.dart';
 import 'package:buybox_app/utils/components/common_button.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:buybox_app/views/order/address_screen.dart';
@@ -17,9 +18,7 @@ class ShoppingCartPage extends StatefulWidget {
 }
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
-  final AddRemoveCartController _controller = Get.put(
-    AddRemoveCartController(),
-  );
+  final AddRemoveCartController _controller = Get.find();
   final OrderController _controller1 = Get.put(OrderController());
   final NavigationbarController _controller2 = Get.find();
   @override
@@ -38,11 +37,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 SizedBox(height: 50),
                 ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                  leading: appBackButton(
-                    AppColors.white,
-                    Icons.arrow_back,
-                    () {},
-                  ),
+
                   title: Text(
                     'Shopping Cart',
                     style: appBarText(AppColors.white),
@@ -121,20 +116,41 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              children: List.generate(_controller.cartItems.length, (index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      _controller.cartItems[index].image,
+          Obx(() {
+            return Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(top: 0),
+                children: List.generate(_controller.cartItems.length, (index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        _controller.cartItems[index].image,
+                      ),
                     ),
-                  ),
-                  title: Text(_controller.cartItems[index].price),
-                );
-              }),
-            ),
-          ),
+                    title: Text(
+                      _controller.cartItems[index].title,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(_controller.cartItems[index].price),
+                    trailing: SizedBox(
+                      width: 120,
+                      child: addRemove(
+                        () {
+                          _controller.addItem(_controller.cartItems[index].id);
+                        },
+                        () {
+                          _controller.removeItem(
+                            _controller.cartItems[index].id,
+                          );
+                        },
+                        _controller.getCount(_controller.cartItems[index].id),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            );
+          }),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Container(
@@ -143,15 +159,25 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 borderRadius: BorderRadius.circular(15),
               ),
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Column(
-                children: [
-                  row('Subtotal', '0', Colors.grey.shade700),
-                  SizedBox(height: 15),
-                  row('Delivery', 'Free', AppColors.green),
-                  SizedBox(height: 15),
-                  row('Total', '0', Colors.black),
-                ],
-              ),
+              child: Obx(() {
+                return Column(
+                  children: [
+                    row(
+                      'Subtotal',
+                      '₹${_controller.totalPrice.toStringAsFixed(2)}',
+                      Colors.grey.shade700,
+                    ),
+                    SizedBox(height: 15),
+                    row('Delivery', 'Free', AppColors.green),
+                    SizedBox(height: 15),
+                    row(
+                      'Total',
+                      '₹${_controller.totalPrice.toStringAsFixed(2)}',
+                      Colors.black,
+                    ),
+                  ],
+                );
+              }),
             ),
           ),
         ],

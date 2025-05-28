@@ -17,7 +17,6 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:redacted/redacted.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // _controller1.fetchData('');
     _controller2.fetchData();
     Timer(Duration(seconds: 3), () async {
       final prefs = await SharedPreferences.getInstance();
@@ -51,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refreshData() async {
-    _controller2.fetchData();
+    _controller2.name.value;
+    await _controller1.fetchData('bestsellers');
   }
 
   @override
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               SizedBox(height: 60),
               Padding(
-                padding: const EdgeInsets.only(left: 25.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
                   "Good Morning",
                   style: TextStyle(
@@ -77,9 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 5),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: GestureDetector(
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Get.toNamed(AppRoutes.search);
                   },
                   child: Container(
-                    height: 60,
+                    height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(width: 1, color: AppColors.grey),
@@ -138,11 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 8),
               ImageSlider(),
-              SizedBox(height: 10),
+
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 25.0, right: 25),
+                  padding: const EdgeInsets.only(left: 10.0, right: 10),
                   child: Row(
                     spacing: 10,
                     children: List.generate(_controller.categoryImage.length, (
@@ -167,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ) {
                       return GestureDetector(
                         onTap: () {
+                          _controller1.product.clear();
                           final navKey =
                               _controller3.navigatorKeys[_controller3
                                   .index
@@ -181,13 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                             ),
                           );
-
-                          // Get.toNamed(
-                          //   AppRoutes.allItems,
-                          //   parameters: {
-                          //     'title': _controller.categoryImage[index]['name'],
-                          //   },
-                          // );
                         },
                         child: Stack(
                           children: [
@@ -195,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: SizedBox(
                                 child: Container(
-                                  width: 105,
+                                  width: 110,
                                   height: 120,
                                   decoration: BoxDecoration(
                                     color: AppColors.green,
@@ -216,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .categoryImage[index]['items'],
                                             style: categoriesItems(),
                                           ),
-                                          SizedBox(height: 10),
+
                                           Row(
                                             children: [
                                               Container(
@@ -236,21 +230,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                 ),
                                               ),
-                                              Container(
-                                                width: 75,
-                                                height: 13,
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.yellow,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                        bottomRight:
-                                                            Radius.circular(15),
-                                                        topLeft:
-                                                            Radius.elliptical(
-                                                              40,
-                                                              20,
-                                                            ),
-                                                      ),
+                                              Expanded(
+                                                child: Container(
+                                                  height: 13,
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.yellow,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                15,
+                                                              ),
+                                                          topLeft:
+                                                              Radius.elliptical(
+                                                                40,
+                                                                20,
+                                                              ),
+                                                        ),
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -262,21 +259,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              left: 20,
+                            Positioned.fill(
                               top: -5,
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: Image.asset(
-                                      _controller.categoryImage[index]['path'],
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit.cover,
-                                    ),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Image.asset(
+                                    _controller.categoryImage[index]['path'],
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ],
@@ -286,16 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 25.0, bottom: 0),
                 child: Text('Popular Deals', style: categories()),
               ),
-              SizedBox(height: 15),
-              itemsWidget(_controller1, _controller4, mediaQuery).redacted(
-                context: context,
-                redact: _controller1.isLoading.value,
-              ),
+              SizedBox(height: 5),
+              itemsWidget(_controller1, _controller4, _controller3, mediaQuery),
               SizedBox(height: 20),
             ],
           ),
