@@ -9,6 +9,16 @@ class SearchItemsController extends GetxController {
   final RxList<Products> _product = <Products>[].obs;
   RxList<Products> get product => _product;
 
+  RxBool _isChange = false.obs;
+
+  RxBool get isChange => _isChange;
+
+  void itemChange() {
+    if (_isChange.value) {
+      _isChange.value = false;
+    }
+  }
+
   Future<void> fetchData(String query) async {
     isLoading.value = true;
 

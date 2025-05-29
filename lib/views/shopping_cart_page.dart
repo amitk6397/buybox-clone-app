@@ -25,163 +25,63 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            width: mediaQuery.size.width,
-            height: mediaQuery.size.height * 0.35,
-            decoration: BoxDecoration(color: AppColors.green),
-            child: Column(
-              children: [
-                SizedBox(height: 50),
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
-
-                  title: Text(
-                    'Shopping Cart',
-                    style: appBarText(AppColors.white),
-                  ),
-                  trailing: appBackButton(
-                    AppColors.white,
-                    Icons.more_vert,
-                    () {},
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Text(
-                        'Off!!',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        '15%',
-                        style: TextStyle(
-                          letterSpacing: 10,
-                          height: 0,
-                          fontSize: 100,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              _controller1.getData();
-              _controller1.changeWidget(false);
-              final navKey =
-                  _controller2.navigatorKeys[_controller2.index.value];
-              navKey.currentState!.push(
-                MaterialPageRoute(builder: (_) => AddressScreen()),
-              );
-            },
-            child: Container(
-              width: mediaQuery.size.width,
-
-              decoration: BoxDecoration(color: Colors.grey.shade100),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 10,
-                ),
-                child: Text(
-                  textAlign: TextAlign.end,
-                  'Checkout >>',
-                  style: TextStyle(
+      body:
+          mediaQuery.orientation == Orientation.portrait
+              ? Column(
+                children: [
+                  topWidget(mediaQuery.size),
+                  checkOutWidget(_controller1, _controller2, mediaQuery.size),
+                  Expanded(child: cartItemWidget(_controller)),
+                  totalPriceWidget(_controller),
+                ],
+              )
+              : Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 50,
                     color: AppColors.green,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
                   ),
-                ),
+
+                  SizedBox(
+                    height: mediaQuery.size.height * 0.7,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: totalPriceWidget(_controller),
+                              ),
+                              SizedBox(height: 50),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                ),
+                                child: checkOutWidget(
+                                  _controller1,
+                                  _controller2,
+                                  mediaQuery.size,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              Expanded(child: cartItemWidget(_controller)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Obx(() {
-            return Expanded(
-              child: ListView(
-                padding: EdgeInsets.only(top: 0),
-                children: List.generate(_controller.cartItems.length, (index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        _controller.cartItems[index].image,
-                      ),
-                    ),
-                    title: Text(
-                      _controller.cartItems[index].title,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(_controller.cartItems[index].price),
-                    trailing: SizedBox(
-                      width: 120,
-                      child: addRemove(
-                        () {
-                          _controller.addItem(_controller.cartItems[index].id);
-                        },
-                        () {
-                          _controller.removeItem(
-                            _controller.cartItems[index].id,
-                          );
-                        },
-                        _controller.getCount(_controller.cartItems[index].id),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            );
-          }),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Obx(() {
-                return Column(
-                  children: [
-                    row(
-                      'Subtotal',
-                      '₹${_controller.totalPrice.toStringAsFixed(2)}',
-                      Colors.grey.shade700,
-                    ),
-                    SizedBox(height: 15),
-                    row('Delivery', 'Free', AppColors.green),
-                    SizedBox(height: 15),
-                    row(
-                      'Total',
-                      '₹${_controller.totalPrice.toStringAsFixed(2)}',
-                      Colors.black,
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -193,5 +93,156 @@ Widget row(String label, String price, Color color) {
       Text(label, style: TextStyle(color: AppColors.grey)),
       Text(price, style: TextStyle(color: color, fontWeight: FontWeight.w500)),
     ],
+  );
+}
+
+Widget topWidget(Size size) {
+  return Container(
+    width: size.width,
+    height: size.height * 0.35,
+    decoration: BoxDecoration(color: AppColors.green),
+    child: Column(
+      children: [
+        SizedBox(height: 50),
+        ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+
+          title: Text('Shopping Cart', style: appBarText(AppColors.white)),
+          trailing: appBackButton(AppColors.white, Icons.more_vert, () {}),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Text(
+                'Off!!',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                '15%',
+                style: TextStyle(
+                  letterSpacing: 10,
+                  height: 0,
+                  fontSize: 100,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget totalPriceWidget(AddRemoveCartController _controller) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      child: Obx(() {
+        return Column(
+          children: [
+            row(
+              'Subtotal',
+              '₹${_controller.totalPrice.toStringAsFixed(2)}',
+              Colors.grey.shade700,
+            ),
+            SizedBox(height: 15),
+            row('Delivery', 'Free', AppColors.green),
+            SizedBox(height: 15),
+            row(
+              'Total',
+              '₹${_controller.totalPrice.toStringAsFixed(2)}',
+              Colors.black,
+            ),
+          ],
+        );
+      }),
+    ),
+  );
+}
+
+Widget cartItemWidget(AddRemoveCartController _controller) {
+  return Obx(() {
+    return ListView(
+      padding: EdgeInsets.only(top: 0),
+      children: List.generate(_controller.cartItems.length, (index) {
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(_controller.cartItems[index].image),
+          ),
+          title: Text(
+            _controller.cartItems[index].title,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(_controller.cartItems[index].price),
+          trailing: SizedBox(
+            width: 120,
+            child: addRemove(
+              () {
+                _controller.addItem(_controller.cartItems[index].id);
+              },
+              () {
+                _controller.removeItem(_controller.cartItems[index].id);
+              },
+              _controller.getCount(_controller.cartItems[index].id),
+            ),
+          ),
+        );
+      }),
+    );
+  });
+}
+
+Widget checkOutWidget(
+  OrderController _controller1,
+  NavigationbarController _controller2,
+  Size size,
+) {
+  return GestureDetector(
+    onTap: () {
+      _controller1.getData();
+      _controller1.changeWidget(false);
+      final navKey = _controller2.navigatorKeys[_controller2.index.value];
+      navKey.currentState!.push(
+        MaterialPageRoute(builder: (_) => AddressScreen()),
+      );
+    },
+    child: Container(
+      width: size.width,
+
+      decoration: BoxDecoration(color: Colors.grey.shade100),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+        child: Text(
+          textAlign: TextAlign.end,
+          'Checkout >>',
+          style: TextStyle(
+            color: AppColors.green,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    ),
   );
 }

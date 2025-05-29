@@ -142,6 +142,7 @@ Widget itemsWidget(
                     MaterialPageRoute(
                       builder:
                           (_) => DetailsPage(
+                            index: index,
                             id: product.asin.toString(),
                             image: product.productPhoto.toString(),
                             title: product.productTitle.toString(),
@@ -180,10 +181,8 @@ Widget itemsWidget(
                           vertical: 2,
                         ),
                         child: Text(
-                          _controller.product[index].productTitle!
-                              .replaceAll('Fresh', '')
-                              .split(',')[0]
-                              .toString(),
+                          _controller.product[index].productTitle!,
+
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
+import 'package:buybox_app/controllers/json_data_controller/fruits_json_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DetailsPage extends StatefulWidget {
+  final int index;
   final String id;
   final String image;
   final String title;
@@ -18,6 +20,7 @@ class DetailsPage extends StatefulWidget {
   final String unit_count;
 
   DetailsPage({
+    required this.index,
     required this.id,
     required this.image,
     required this.title,
@@ -32,6 +35,7 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   final SearchItemsController _controller = Get.put(SearchItemsController());
+
   final NavigationbarController _controller1 = Get.find();
   final AddRemoveCartController _controller2 = Get.put(
     AddRemoveCartController(),
@@ -84,6 +88,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             children: [
                               SizedBox(height: 50),
                               container(
+                                widget.index,
                                 widget.id,
                                 widget.title,
                                 widget.unit_count,
@@ -91,6 +96,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 widget.originalPrice,
                                 widget.image,
                                 _controller2,
+                                // _controller3
                               ),
                               Divider(),
                               Row(
@@ -119,6 +125,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               //Similar Product
                               similarProduct(
+                                widget.index,
                                 context,
                                 _controller,
                                 _controller2,
@@ -196,6 +203,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: container(
+                              widget.index,
                               widget.id,
                               widget.title,
                               widget.unit_count,
@@ -205,7 +213,12 @@ class _DetailsPageState extends State<DetailsPage> {
                               _controller2,
                             ),
                           ),
-                          similarProduct(context, _controller, _controller2),
+                          similarProduct(
+                            widget.index,
+                            context,
+                            _controller,
+                            _controller2,
+                          ),
                         ],
                       ),
                     ),
@@ -255,6 +268,7 @@ Widget ciricleWidget(Size size) {
 }
 
 Widget similarProduct(
+  int index,
   BuildContext context,
   SearchItemsController _controller,
   AddRemoveCartController _controller2,
@@ -271,6 +285,7 @@ Widget similarProduct(
                 context: context,
                 builder: (BuildContext context) {
                   return bottomSheet(
+                    index,
                     product.asin.toString(),
 
                     product.productTitle.toString(),
@@ -299,10 +314,8 @@ Widget similarProduct(
                     height: 70,
                   ),
                   Text(
-                    _controller.product[index].productTitle!
-                        .replaceAll('Fresh', '')
-                        .split(',')[0]
-                        .toString(),
+                    _controller.product[index].productTitle!,
+
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

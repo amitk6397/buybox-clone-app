@@ -56,43 +56,52 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
       ),
       body:
           mediaQuery.orientation == Orientation.portrait
-              ? SingleChildScrollView(
-                child: Column(
+              ? Obx(() {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      ImageSlider(),
+                      SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Divider(),
+                      ),
+                      SizedBox(height: 5),
+                      _controller.isLoading.value
+                          ? CircularProgressIndicator()
+                          : itemsWidget(
+                            _controller,
+                            _controller1,
+                            _controller2,
+                            mediaQuery,
+                          ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                );
+              })
+              : Obx(() {
+                return Row(
                   children: [
-                    SizedBox(height: 10),
-                    ImageSlider(),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Divider(),
-                    ),
-                    SizedBox(height: 5),
-                    itemsWidget(
-                      _controller,
-                      _controller1,
-                      _controller2,
-                      mediaQuery,
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              )
-              : Row(
-                children: [
-                  Expanded(flex: 1, child: ImageSlider()),
-                  Expanded(
-                    flex: 2,
-                    child: SingleChildScrollView(
-                      child: itemsWidget(
-                        _controller,
-                        _controller1,
-                        _controller2,
-                        mediaQuery,
+                    Expanded(flex: 1, child: ImageSlider()),
+                    Expanded(
+                      flex: 2,
+                      child: SingleChildScrollView(
+                        child:
+                            _controller.isLoading.value
+                                ? CircularProgressIndicator()
+                                : itemsWidget(
+                                  _controller,
+                                  _controller1,
+                                  _controller2,
+                                  mediaQuery,
+                                ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
     );
   }
 }
