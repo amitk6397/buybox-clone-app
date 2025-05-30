@@ -6,6 +6,5 @@ class OrderBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => OrderController());
-    Get.lazyPut(() => NavigationbarController());
   }
 }

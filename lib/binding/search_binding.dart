@@ -8,7 +8,7 @@ class SearchBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => SerachScreenItemController());
-    Get.lazyPut(() => NavigationbarController());
+
     Get.lazyPut(() => AddRemoveCartController());
   }
 }

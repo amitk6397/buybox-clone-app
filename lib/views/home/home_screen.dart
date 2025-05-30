@@ -283,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.only(left: 25.0, bottom: 0),
+                padding: const EdgeInsets.only(left: 10.0, bottom: 0),
                 child: Text('Popular Deals', style: categories()),
               ),
               SizedBox(height: 5),

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
+import 'package:buybox_app/controllers/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/profile_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -15,8 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfielScreen extends StatelessWidget {
   final GetFirebasestoreData _controller = Get.put(GetFirebasestoreData());
-  final ProfileController _controller1 = Get.put(ProfileController());
   final NavigationbarController _controller2 = Get.find();
+  final ProfileController _controller1 = Get.put(ProfileController());
+
+  final ImagePickerController _controller3 = Get.find();
   singOut() async {
     final pref = await SharedPreferences.getInstance();
     pref.clear();
@@ -44,56 +49,74 @@ class ProfielScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(15),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(15),
-                ),
+              Obx(
+                () => Container(
+                  padding: EdgeInsets.all(15),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
 
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.person,
-                                size: 50,
-                                color: AppColors.yellow,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            _controller3.imagePath.value == null
+                                ? SizedBox()
+                                : Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(40),
+                                    image: DecorationImage(
+                                      image: FileImage(
+                                        File(_controller3.imagePath.value),
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child:
+                                      _controller3.imagePath.value != null
+                                          ? null
+                                          : Center(
+                                            child: Icon(
+                                              Icons.person,
+                                              size: 50,
+                                              color: AppColors.yellow,
+                                            ),
+                                          ),
+                                ),
+                            Positioned(
+                              bottom: -5,
+                              right: -10,
+                              child: appBackButton(
+                                AppColors.yellow,
+                                Icons.edit,
+                                () async {
+                                  _controller3.pickImage();
+                                  print(_controller3.imagePath);
+                                },
                               ),
                             ),
-                          ),
-                          Positioned(
-                            child: appBackButton(
-                              AppColors.yellow,
-                              Icons.edit,
-                              () {},
+                          ],
+                        ),
+                        SizedBox(width: 40),
+                        Column(
+                          children: [
+                            Obx(
+                              () => Text(
+                                _controller.name.value,
+                                style: startPage(),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 40),
-                      Column(
-                        children: [
-                          Obx(
-                            () => Text(
-                              _controller.name.value,
-                              style: startPage(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -123,16 +146,18 @@ class ProfielScreen extends StatelessWidget {
                           prefs.getString('address').toString(),
                         );
 
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _controller2
-                              .navigatorKeys[_controller2.index.value]
-                              .currentState!
-                              .push(
-                                MaterialPageRoute(
-                                  builder: (_) => PersonalInfoPage(),
-                                ),
-                              );
-                        });
+                        _controller2
+                            .navigatorKeys[_controller2.index.value]
+                            .currentState!
+                            .push(
+                              MaterialPageRoute(
+                                builder: (_) => PersonalInfoPage(),
+                              ),
+                            );
+
+                        // WidgetsBinding.instance.addPostFrameCallback((_) {
+
+                        // });
                       },
                     ),
                     ListtileWidget(

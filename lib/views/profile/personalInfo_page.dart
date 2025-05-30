@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
+import 'package:buybox_app/controllers/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/controllers/profile_controller.dart';
@@ -31,6 +33,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   TextEditingController textcontroller = TextEditingController();
 
   final ProfileController _controller = Get.find();
+
+  final ImagePickerController _controller4 = Get.put(ImagePickerController());
+
+  final pref = SharedPreferences.getInstance();
 
   @override
   void initState() {
@@ -100,12 +106,15 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     color: AppColors.green,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(
-                    '',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(child: Text('No Select Image'));
-                    },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(75),
+                    child: Image.file(
+                      File(_controller4.imagePath.value),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(child: Text('No Select Image'));
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 15),

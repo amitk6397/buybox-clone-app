@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
+import 'package:buybox_app/controllers/json_data_controller/fruits_json_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -22,7 +23,6 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
   final SearchItemsController _controller = Get.put(SearchItemsController());
   final AddRemoveCartController _controller1 = Get.find();
   final NavigationbarController _controller2 = Get.find();
-
   @override
   void initState() {
     // TODO: implement initState
@@ -48,9 +48,11 @@ class _AllCategoryItemsState extends State<AllCategoryItems> {
           ),
           SizedBox(width: 10),
         ],
-        title: Text(
-          "${widget.title}(${_controller.product.length})",
-          style: appBarText(AppColors.white),
+        title: Obx(
+          () => Text(
+            "${widget.title}(${_controller.product.length})",
+            style: appBarText(AppColors.white),
+          ),
         ),
         backgroundColor: AppColors.green,
       ),

@@ -6,18 +6,17 @@ import 'package:buybox_app/utils/components/category_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-final FruitsJsonController _controller3 = Get.put(FruitsJsonController());
-
 Widget bottomSheet(
   int index,
   String id,
 
   String title,
-  String unit_count,
+
   String price,
-  String originalPrice,
+
   String image,
   AddRemoveCartController _controller1,
+  FruitsJsonController _controller3,
 ) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 25),
@@ -32,16 +31,7 @@ Widget bottomSheet(
           SizedBox(height: 10),
           Center(child: Image.network(image, width: 250, height: 200)),
           SizedBox(height: 10),
-          container(
-            index,
-            id,
-            title,
-            unit_count,
-            price,
-            originalPrice,
-            image,
-            _controller1,
-          ),
+          container(index, id, title, price, image, _controller1, _controller3),
           SizedBox(height: 40),
         ],
       ),
@@ -53,11 +43,12 @@ Widget container(
   int index,
   String id,
   String title,
-  String unit_count,
+
   String price,
-  String originalPrice,
+
   String image,
   AddRemoveCartController _controller1,
+  FruitsJsonController _controller3,
 ) {
   return Obx(() {
     var tit =
@@ -68,11 +59,8 @@ Widget container(
         _controller3.isChange.value
             ? _controller3.listData[index].price
             : price;
-    var piec =
-        _controller3.isChange.value
-            ? _controller3.listData[index].piece
-            : unit_count;
-    var productId = _controller3.isChange.value ? '${id}A' : id;
+
+    var productId = '${id}A';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -112,89 +100,66 @@ Widget container(
                 ],
               ),
             ),
+            // product
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      _controller3.itemChange(false);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          width: _controller3.isChange.value ? 1 : 1,
-                          color:
-                              !_controller3.isChange.value
-                                  ? AppColors.green
-                                  : AppColors.white,
+                  Stack(
+                    children: [
+                      productItems(
+                        () {
+                          _controller3.itemChange(false);
+                        },
+                        _controller3,
+                        image,
+                        'Product 1',
+                        _controller3.isChange.value
+                            ? AppColors.grey
+                            : AppColors.green,
+                      ),
+                      Positioned(
+                        right: 5,
+                        child: Text(
+                          _controller1.getCount(id) > 0
+                              ? '${_controller1.getCount(id)}'
+                              : '',
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 13,
-                              backgroundImage: NetworkImage(image),
-                            ),
-                            Text(
-                              'Product 1',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.green,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _controller3.itemChange(true);
-                      _controller3.getData();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          width: _controller3.isChange.value ? 1 : 1,
-                          color:
-                              !_controller3.isChange.value
-                                  ? AppColors.white
-                                  : AppColors.green,
+                  SizedBox(width: 5),
+                  Stack(
+                    children: [
+                      productItems(
+                        () {
+                          _controller3.itemChange(true);
+                          _controller3.getData();
+                        },
+                        _controller3,
+                        image,
+                        'Product 2',
+                        _controller3.isChange.value
+                            ? AppColors.green
+                            : AppColors.grey,
+                      ),
+                      Positioned(
+                        right: 5,
+                        child: Text(
+                          _controller1.getCount(productId) > 0
+                              ? '${_controller1.getCount(productId)}'
+                              : '',
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 14,
-                              backgroundImage: NetworkImage(image),
-                            ),
-                            Text(
-                              'Product 2',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.green,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
+                  SizedBox(width: 8),
                 ],
               ),
             ),
           ],
         ),
-        Text(piec, style: TextStyle(color: AppColors.grey)),
+
         SizedBox(height: 5),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,45 +175,29 @@ Widget container(
                   ),
                 ),
                 SizedBox(width: 5),
-                Text(
-                  originalPrice,
-                  style: TextStyle(
-                    fontSize: 16,
-                    decoration: TextDecoration.lineThrough,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
               ],
             ),
             Obx(() {
               return _controller3.isChange.value
                   ? addRemove(
                     () {
-                      print(tit);
-                      print(pric);
                       _controller1.addCartItems(productId, tit, pric, image);
                       _controller1.addItem(productId);
                     },
                     () {
-                      print(tit);
-                      print(pric);
                       _controller1.removeItem(productId);
                     },
                     _controller1.getCount(productId),
                   )
                   : addRemove(
                     () {
-                      print(tit);
-                      print(pric);
-                      _controller1.addCartItems(productId, tit, pric, image);
-                      _controller1.addItem(productId);
+                      _controller1.addCartItems(id, title, price, image);
+                      _controller1.addItem(id);
                     },
                     () {
-                      print(tit);
-                      print(pric);
-                      _controller1.removeItem(productId);
+                      _controller1.removeItem(id);
                     },
-                    _controller1.getCount(productId),
+                    _controller1.getCount(id),
                   );
             }),
           ],
@@ -292,4 +241,38 @@ Widget container(
       ],
     );
   });
+}
+
+Widget productItems(
+  VoidCallback onTap,
+  FruitsJsonController _controller3,
+  String image,
+  String label,
+  Color color,
+) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(width: 1, color: color),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            CircleAvatar(radius: 13, backgroundImage: NetworkImage(image)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                color: AppColors.green,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

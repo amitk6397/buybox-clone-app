@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buybox_app/controllers/image_picker_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/views/start_page/start_pages.dart';
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAllNamed(AppRoutes.myHome);
       });
     } else {
-      Timer(Duration(seconds: 5), () {
+      Timer(Duration(seconds: 5), () async {
         Get.offAllNamed(AppRoutes.startApp);
       });
     }

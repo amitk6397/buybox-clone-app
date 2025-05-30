@@ -16,8 +16,6 @@ class DetailsPage extends StatefulWidget {
   final String image;
   final String title;
   final String price;
-  final String originalPrice;
-  final String unit_count;
 
   DetailsPage({
     required this.index,
@@ -25,8 +23,6 @@ class DetailsPage extends StatefulWidget {
     required this.image,
     required this.title,
     required this.price,
-    required this.originalPrice,
-    required this.unit_count,
   });
 
   @override
@@ -41,7 +37,8 @@ class _DetailsPageState extends State<DetailsPage> {
     AddRemoveCartController(),
   );
 
-  final arg = Get.parameters;
+  final FruitsJsonController _controller3 = Get.put(FruitsJsonController());
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -58,7 +55,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Column(
                       children: [
                         SizedBox(height: 48),
-                        arrowAndSearchIcon(_controller1),
+                        arrowAndSearchIcon(_controller1, _controller3),
                         ciricleWidget(mediaQuery),
                       ],
                     ),
@@ -73,7 +70,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       //  physics: BouncingScrollPhysics(),
                       child: Container(
                         width: mediaQuery.width,
-
+                        height: mediaQuery.height * 0.6,
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.only(
@@ -91,12 +88,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                 widget.index,
                                 widget.id,
                                 widget.title,
-                                widget.unit_count,
+
                                 widget.price,
-                                widget.originalPrice,
+
                                 widget.image,
                                 _controller2,
-                                // _controller3
+                                _controller3,
                               ),
                               Divider(),
                               Row(
@@ -129,6 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 context,
                                 _controller,
                                 _controller2,
+                                _controller3,
                               ),
                             ],
                           ),
@@ -172,7 +170,10 @@ class _DetailsPageState extends State<DetailsPage> {
                           top: 30,
                           child: Align(
                             alignment: Alignment.topCenter,
-                            child: arrowAndSearchIcon(_controller1),
+                            child: arrowAndSearchIcon(
+                              _controller1,
+                              _controller3,
+                            ),
                           ),
                         ),
                         Positioned.fill(
@@ -206,11 +207,12 @@ class _DetailsPageState extends State<DetailsPage> {
                               widget.index,
                               widget.id,
                               widget.title,
-                              widget.unit_count,
+
                               widget.price,
-                              widget.originalPrice,
+
                               widget.image,
                               _controller2,
+                              _controller3,
                             ),
                           ),
                           similarProduct(
@@ -218,6 +220,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             context,
                             _controller,
                             _controller2,
+                            _controller3,
                           ),
                         ],
                       ),
@@ -229,11 +232,15 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 }
 
-Widget arrowAndSearchIcon(NavigationbarController _controller1) {
+Widget arrowAndSearchIcon(
+  NavigationbarController _controller1,
+  FruitsJsonController _controller,
+) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       appBackButton(AppColors.white, Icons.arrow_back, () {
+        _controller.itemChange(false);
         _controller1.navigatorKeys[_controller1.index.value].currentState
             ?.maybePop();
       }),
@@ -272,6 +279,7 @@ Widget similarProduct(
   BuildContext context,
   SearchItemsController _controller,
   AddRemoveCartController _controller2,
+  FruitsJsonController _controller3,
 ) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
@@ -289,11 +297,12 @@ Widget similarProduct(
                     product.asin.toString(),
 
                     product.productTitle.toString(),
-                    product.unitCount.toString(),
+
                     product.productPrice.toString(),
-                    product.productOriginalPrice.toString(),
+
                     product.productPhoto.toString(),
                     _controller2,
+                    _controller3,
                   );
                 },
               );

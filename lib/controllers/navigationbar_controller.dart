@@ -11,22 +11,16 @@ class NavigationbarController extends GetxController {
 
   RxInt get index => _index;
 
-  Widget getPage(int i) {
-    switch (i) {
-      case 0:
-        return HomeScreen();
-      case 1:
-        return CategoriesPage();
-      case 2:
-        return ShoppingCartPage();
-      case 3:
-        return FavoritesItemsPage();
-      case 4:
-        return ProfielScreen();
-      default:
-        return HomeScreen();
-    }
-  }
+  final List<Widget Function()> _pages = [
+    () => HomeScreen(),
+    () => CategoriesPage(),
+    () => ShoppingCartPage(),
+    () => FavoritesItemsPage(),
+    () => ProfielScreen(),
+  ];
+
+  List<Widget Function()> get pages =>
+      _pages; //.map((builder) => builder()).toList();
 
   final List<GlobalKey<NavigatorState>> navigatorKeys = List.generate(
     5,

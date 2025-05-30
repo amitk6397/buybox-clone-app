@@ -1,5 +1,6 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/home_page_controller.dart';
+import 'package:buybox_app/controllers/json_data_controller/fruits_json_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -11,6 +12,8 @@ import 'package:buybox_app/views/category/all_category_items.dart';
 import 'package:buybox_app/views/category/details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+final FruitsJsonController _controller4 = Get.put(FruitsJsonController());
 
 Widget card(
   HomePageController _controller,
@@ -132,6 +135,7 @@ Widget itemsWidget(
             children: [
               GestureDetector(
                 onTap: () {
+                  _controller4.getData();
                   var product = _controller.product[index];
 
                   final navKek =
@@ -146,11 +150,7 @@ Widget itemsWidget(
                             id: product.asin.toString(),
                             image: product.productPhoto.toString(),
                             title: product.productTitle.toString(),
-                            price: product.productPrice!.toString(),
-                            originalPrice:
-                                product.productOriginalPrice!.toString(),
-
-                            unit_count: product.unitCount.toString(),
+                            price: product.productPrice.toString(),
                           ),
                     ),
                   );

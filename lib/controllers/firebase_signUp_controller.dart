@@ -26,6 +26,12 @@ class FirebaseSignupController extends GetxController {
 
       //navigate
 
+      if(userName == 'Amit kumar'){
+        
+      }else{
+        Get.offAllNamed(AppRoutes.myHome);
+      }
+
       Get.offAllNamed(AppRoutes.myHome);
 
       Get.snackbar(

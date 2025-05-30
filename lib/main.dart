@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
+import 'package:buybox_app/controllers/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/serach_screen_item_controller.dart';
 import 'package:buybox_app/route/app_pages.dart';
@@ -6,6 +7,7 @@ import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/components/bottom_navigationbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,12 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final directory = await getApplicationDocumentsDirectory();
-  Get.put(
-    SerachScreenItemController(),
-    permanent: true,
-  ); // 👈 stays alive across screens
+  Get.put(SerachScreenItemController(), permanent: true);
   Get.put(AddRemoveCartController(), permanent: true);
-  //Get.put(NavigationbarController(), permanent: true);
+  Get.put(ImagePickerController(), permanent: true);
+  Get.put(NavigationbarController(), permanent: true);
   Hive.init(directory.path);
   runApp(const MyApp());
 }
@@ -49,11 +49,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final NavigationbarController _controller = Get.put(
-    NavigationbarController(),
-  );
+  final NavigationbarController _controller = Get.find();
 
   final AddRemoveCartController _controller1 = Get.find();
+  final ImagePickerController _controller2 = Get.put(ImagePickerController());
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!didPop) {
           final shouldPop = await _controller.onWillPop();
           if (shouldPop) {
-            Navigator.of(context).maybePop();
+            Future.delayed(Duration(milliseconds: 100), () {
+              SystemNavigator.pop();
+            });
           }
         }
       },
@@ -72,18 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
           return IndexedStack(
             index: _controller.index.value,
             children: List.generate(
-              5, // Assuming 5 tabs
+              5,
               (i) => Navigator(
                 key: _controller.navigatorKeys[i],
                 onGenerateRoute:
                     (_) => MaterialPageRoute(
-                      builder: (_) => _controller.getPage(i),
+                      builder: (_) => _controller.pages[i](),
                     ),
               ),
             ),
           );
         }),
-        bottomNavigationBar: bottomNavigationBar(_controller, _controller1),
+        bottomNavigationBar: bottomNavigationBar(
+          _controller,
+          _controller1,
+          _controller2,
+        ),
       ),
     );
   }

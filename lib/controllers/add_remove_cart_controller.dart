@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:buybox_app/models/request_models/cart_request_model.dart';
 import 'package:buybox_app/models/request_models/fav_item_request_model.dart';
 import 'package:get/get.dart';
@@ -17,9 +19,13 @@ class AddRemoveCartController extends GetxController {
 
   void addCartItems(String id, String title, String price, String image) {
     _counter.value++;
-    _cartItems.add(
-      CartRequestModel(id: id, title: title, price: price, image: image),
-    );
+
+    final exitItem = _cartItems.indexWhere((item) => item.id == id);
+    if (exitItem == -1) {
+      _cartItems.add(
+        CartRequestModel(id: id, title: title, price: price, image: image),
+      );
+    }
   }
 
   //removeCartitems
