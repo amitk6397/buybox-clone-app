@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
-import 'package:buybox_app/controllers/image_picker_controller.dart';
+import 'package:buybox_app/controllers/user_controller/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/views/home/home_screen.dart';

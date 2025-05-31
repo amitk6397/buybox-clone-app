@@ -1,4 +1,5 @@
 import 'package:buybox_app/route/app_routes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -54,8 +55,14 @@ class HomePageController extends GetxController {
 
         if (placeMark.isNotEmpty) {
           Placemark place = placeMark.first;
-          address.value =
+          var addressDetails =
               "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+
+          address.value = addressDetails;
+          final _firestore = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(prefs.getString('token'))
+              .set({'location': addressDetails}, SetOptions(merge: true));
           _city.value = place.locality.toString();
         }
 

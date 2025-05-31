@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:buybox_app/models/request_models/cart_request_model.dart';
 import 'package:buybox_app/models/request_models/fav_item_request_model.dart';
+import 'package:buybox_app/models/request_models/order_request_model.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddRemoveCartController extends GetxController {
   RxInt _counter = 0.obs;
@@ -17,14 +19,35 @@ class AddRemoveCartController extends GetxController {
 
   //addCartItems
 
-  void addCartItems(String id, String title, String price, String image) {
-    _counter.value++;
+  RxList<OrderItem> _items = <OrderItem>[].obs;
 
+  RxList<OrderItem> get items => _items;
+
+  void addOrder({
+    required String id,
+    required String title,
+    required double price,
+    required String image,
+    required int quantity,
+  }) {}
+
+  void addCartItems(String id, String title, String price, String image) async {
+    _counter.value++;
+    final pref = await SharedPreferences.getInstance();
     final exitItem = _cartItems.indexWhere((item) => item.id == id);
     if (exitItem == -1) {
       _cartItems.add(
         CartRequestModel(id: id, title: title, price: price, image: image),
       );
+      //   _items.add(
+      //   OrderItem(
+      //     itemId: id,
+      //      name: title,
+      //       image: image,
+      //        quantity: quantity,
+      //         price: price
+      //         )
+      // );
     }
   }
 

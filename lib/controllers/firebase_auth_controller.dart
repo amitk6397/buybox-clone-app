@@ -1,5 +1,6 @@
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseAuthController extends GetxController {
-  RxString token = ''.obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   RxBool isLoading = false.obs;
   login(email, password) async {
@@ -18,17 +19,41 @@ class FirebaseAuthController extends GetxController {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      if (userCredential.user?.uid != null) {
-        token.value = userCredential.user!.uid;
+      final document =
+          await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .get();
 
-        final SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString('token', token.toString());
+      if (document.exists && document.data()?['blocked'] == true) {
+        Get.snackbar('Access Denied', 'Your account has been blocked.');
+        await FirebaseAuth.instance.signOut();
+        Get.offAllNamed(AppRoutes.login);
+        return;
+      }
 
-        Get.offAllNamed(AppRoutes.myHome);
+      Map<String, dynamic> userRole = document.data() as Map<String, dynamic>;
 
+      String roleName = userRole['role'];
+
+      if (userRole['role'] == 'admin') {
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('role', roleName);
+        pref.setString('token', userCredential.user!.uid);
+        Get.offAllNamed(AppRoutes.adminDashboard);
         Get.snackbar(
-          'Success',
-          'Login Success',
+          "Success",
+          "Register Success Admin",
+          backgroundColor: AppColors.successMessageColor,
+        );
+      } else {
+        final pref = await SharedPreferences.getInstance();
+        pref.setString('role', roleName);
+        pref.setString('token', userCredential.user!.uid);
+        Get.offAllNamed(AppRoutes.myHome);
+        Get.snackbar(
+          "Success",
+          "Register Success user",
           backgroundColor: AppColors.successMessageColor,
         );
       }

@@ -34,4 +34,8 @@ class AppRoutes {
 
   static const String order = '/order';
   static const String payment = '/payment';
+
+  // Admin screen
+
+  static const String adminDashboard = '/adminDashboard';
 }

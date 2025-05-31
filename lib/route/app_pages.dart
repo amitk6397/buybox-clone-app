@@ -6,6 +6,7 @@ import 'package:buybox_app/binding/search_binding.dart';
 import 'package:buybox_app/main.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/splash_screen.dart';
+import 'package:buybox_app/views/admin/admin_screen.dart';
 import 'package:buybox_app/views/auth/forgot_password.dart';
 import 'package:buybox_app/views/auth/login_page.dart';
 import 'package:buybox_app/views/auth/signIn_page.dart';
@@ -92,5 +93,8 @@ class AppPages {
       page: () => PaymentScreen(),
       binding: OrderBinding(),
     ),
+
+    // Admin Screen Navigation
+    GetPage(name: AppRoutes.adminDashboard, page: () => AdminScreen()),
   ];
 }

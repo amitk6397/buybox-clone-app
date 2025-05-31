@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // PersonalInfo Screen
 
-final ProfileController _controller = Get.put(ProfileController());
-
 Widget editUser(String title, String name, VoidCallback onTap, IconData? icon) {
   return Card(
     child: Padding(
@@ -27,6 +25,7 @@ Widget editUser(String title, String name, VoidCallback onTap, IconData? icon) {
 Widget alertContainer(
   TextEditingController genderController,
   TextEditingController dobController,
+  ProfileController _controller,
   BuildContext context,
 ) {
   return SizedBox(

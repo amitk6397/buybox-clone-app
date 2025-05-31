@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +32,11 @@ class ImagePickerController extends GetxController {
       imagePath.value = image.path;
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('imagePathSave', image.path);
+
+      final _firebase = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(prefs.getString('token'))
+          .set({'image': image.path}, SetOptions(merge: true));
       print('Saved image path: ${imagePath.value}');
     }
   }

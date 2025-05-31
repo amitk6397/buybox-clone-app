@@ -17,12 +17,12 @@ final FruitsJsonController _controller4 = Get.put(FruitsJsonController());
 
 Widget card(
   HomePageController _controller,
-  NavigationbarController _controller3,
+  NavigationbarController? _controller3,
   int index,
 ) {
   return GestureDetector(
     onTap: () {
-      final navKey = _controller3.navigatorKeys[_controller3.index.value];
+      final navKey = _controller3!.navigatorKeys[_controller3.index.value];
       navKey.currentState!.push(
         MaterialPageRoute(
           builder:

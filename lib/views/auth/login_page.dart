@@ -1,4 +1,5 @@
 import 'package:buybox_app/controllers/firebase_auth_controller.dart';
+import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/login_components.dart';
@@ -148,6 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 10),
                       button('Sign in', () {
+                        final navController =
+                            Get.find<NavigationbarController>();
+                        navController.resetNavigatorKeys();
+                        navController.changeScreen(0); // Go to Home
+
                         _controller.login(
                           emailController.text.trim(),
                           passController.text.trim(),

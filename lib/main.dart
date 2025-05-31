@@ -1,5 +1,5 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
-import 'package:buybox_app/controllers/image_picker_controller.dart';
+import 'package:buybox_app/controllers/user_controller/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/serach_screen_item_controller.dart';
 import 'package:buybox_app/route/app_pages.dart';
@@ -19,7 +19,7 @@ void main() async {
   Get.put(SerachScreenItemController(), permanent: true);
   Get.put(AddRemoveCartController(), permanent: true);
   Get.put(ImagePickerController(), permanent: true);
-  Get.put(NavigationbarController(), permanent: true);
+  Get.lazyPut(() => NavigationbarController(), fenix: true);
   Hive.init(directory.path);
   runApp(const MyApp());
 }
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final NavigationbarController _controller = Get.find();
 
   final AddRemoveCartController _controller1 = Get.find();
-  final ImagePickerController _controller2 = Get.put(ImagePickerController());
+  final ImagePickerController _controller2 = Get.find();
 
   @override
   Widget build(BuildContext context) {

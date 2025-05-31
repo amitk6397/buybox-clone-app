@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
-import 'package:buybox_app/controllers/image_picker_controller.dart';
+import 'package:buybox_app/controllers/user_controller/image_picker_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/profile_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
@@ -24,9 +24,13 @@ class ProfielScreen extends StatelessWidget {
   final ImagePickerController _controller3 = Get.find();
   singOut() async {
     final pref = await SharedPreferences.getInstance();
-    pref.clear();
+    if (pref.getString('role') == 'user') {
+      Get.delete<NavigationbarController>();
 
-    Get.offAllNamed(AppRoutes.login);
+      pref.clear();
+
+      Get.offAllNamed(AppRoutes.login);
+    }
   }
 
   @override

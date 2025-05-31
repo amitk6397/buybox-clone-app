@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 
 class NavigationbarController extends GetxController {
   RxInt _index = 0.obs;
-
   RxInt get index => _index;
 
   final List<Widget Function()> _pages = [
@@ -19,15 +18,21 @@ class NavigationbarController extends GetxController {
     () => ProfielScreen(),
   ];
 
-  List<Widget Function()> get pages =>
-      _pages; //.map((builder) => builder()).toList();
+  List<Widget Function()> get pages => _pages;
 
-  final List<GlobalKey<NavigatorState>> navigatorKeys = List.generate(
-    5,
-    (_) => GlobalKey<NavigatorState>(),
-  );
+  late List<GlobalKey<NavigatorState>> navigatorKeys;
 
-  void changeScreen(value) {
+  @override
+  void onInit() {
+    super.onInit();
+    navigatorKeys = List.generate(5, (_) => GlobalKey<NavigatorState>());
+  }
+
+  void resetNavigatorKeys() {
+    navigatorKeys = List.generate(5, (_) => GlobalKey<NavigatorState>());
+  }
+
+  void changeScreen(int value) {
     _index.value = value;
   }
 

@@ -11,12 +11,9 @@ import 'package:buybox_app/utils/components/category_components.dart';
 import 'package:buybox_app/utils/components/image_slider.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:buybox_app/views/category/all_category_items.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
