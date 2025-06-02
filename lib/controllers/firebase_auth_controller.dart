@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive/hive.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseAuthController extends GetxController {

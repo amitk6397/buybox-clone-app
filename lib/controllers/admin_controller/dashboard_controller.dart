@@ -26,6 +26,8 @@ class DashboardController extends GetxController {
 
       _userList.value = userData;
       showStates.value = List.generate(userData.length, (_) => false);
+      _userList.value =
+          userData.map((user) => {...user, 'isVisible': false}).toList();
     } catch (e) {
       Get.snackbar(
         'Error',
@@ -38,24 +40,26 @@ class DashboardController extends GetxController {
     }
   }
 
-  void toggleVisibility(int index) {
+  void toggleVisibility1(int index) {
     showStates[index] = !showStates[index];
     showStates.refresh();
+  }
+
+  void toggleVisibility(int index) {
+    _userList[index]['isVisible'] = !(_userList[index]['isVisible'] ?? false);
+    _userList.refresh();
   }
 
   // delete user Account
 
   Future<void> deleteUserByAdmin(String uid) async {
     try {
-      isLoading.value = true;
-      final callable = FirebaseFunctions.instance.httpsCallable(
-        'deleteUserAccount',
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+      Get.snackbar(
+        'Success',
+        'Delete your account',
+        backgroundColor: AppColors.successMessageColor,
       );
-      final result = await callable.call({'uid': uid});
-
-      Get.snackbar('Success', result.data['message']);
-
-      // Refresh the user list after deletion
       await listOfUsers();
     } on FirebaseFunctionsException catch (e) {
       Get.snackbar(

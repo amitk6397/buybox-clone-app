@@ -93,7 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           trailing: GestureDetector(
                             onTap: () {
-                              _controller.toggleVisibility(index);
+                              _controller.toggleVisibility1(index);
                             },
                             child: Icon(Icons.arrow_drop_down),
                           ),

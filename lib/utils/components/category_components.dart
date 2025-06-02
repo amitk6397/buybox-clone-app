@@ -159,6 +159,7 @@ Widget itemsWidget(
                   elevation: 4,
                   color: AppColors.white,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.network(
@@ -254,7 +255,6 @@ Widget itemsWidget(
                                 _controller.product[index].productPhoto
                                     .toString(),
                               );
-
                               _controller1.addItem(
                                 _controller.product[index].asin.toString(),
                               );

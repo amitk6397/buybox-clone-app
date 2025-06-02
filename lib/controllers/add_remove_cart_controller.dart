@@ -19,18 +19,6 @@ class AddRemoveCartController extends GetxController {
 
   //addCartItems
 
-  RxList<OrderItem> _items = <OrderItem>[].obs;
-
-  RxList<OrderItem> get items => _items;
-
-  void addOrder({
-    required String id,
-    required String title,
-    required double price,
-    required String image,
-    required int quantity,
-  }) {}
-
   void addCartItems(String id, String title, String price, String image) async {
     _counter.value++;
     final pref = await SharedPreferences.getInstance();
@@ -39,15 +27,6 @@ class AddRemoveCartController extends GetxController {
       _cartItems.add(
         CartRequestModel(id: id, title: title, price: price, image: image),
       );
-      //   _items.add(
-      //   OrderItem(
-      //     itemId: id,
-      //      name: title,
-      //       image: image,
-      //        quantity: quantity,
-      //         price: price
-      //         )
-      // );
     }
   }
 
@@ -77,6 +56,7 @@ class AddRemoveCartController extends GetxController {
   void removeItem(String id) {
     if (_itemCounts.containsKey(id) && _itemCounts[id]! > 0) {
       _itemCounts[id] = _itemCounts[id]! - 1;
+
       if (_itemCounts[id] == 0) {
         _itemCounts.remove(id);
         _cartItems.removeWhere((item) => item.id == id);

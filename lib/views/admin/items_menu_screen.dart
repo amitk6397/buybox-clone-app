@@ -1,6 +1,7 @@
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
-import 'package:buybox_app/utils/components/category_components.dart';
+import 'package:buybox_app/utils/text_style/text_styles.dart';
+import 'package:buybox_app/views/admin/product_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,14 +47,14 @@ class _ItemsMenuScreenState extends State<ItemsMenuScreen> {
                     crossAxisSpacing: 20,
                   ),
                   children: [
-                    card(_controller, null, 0),
-                    card(_controller, null, 1),
-                    card(_controller, null, 2),
-                    card(_controller, null, 3),
+                    card(context, _controller, 0),
+                    card(context, _controller, 1),
+                    card(context, _controller, 2),
+                    card(context, _controller, 3),
                   ],
                 ),
                 SizedBox(height: 40),
-                SizedBox(height: 150, child: card(_controller, null, 4)),
+                SizedBox(height: 150, child: card(context, _controller, 4)),
                 SizedBox(height: 40),
                 GridView(
                   shrinkWrap: true,
@@ -65,14 +66,14 @@ class _ItemsMenuScreenState extends State<ItemsMenuScreen> {
                     crossAxisSpacing: 20,
                   ),
                   children: [
-                    card(_controller, null, 5),
-                    card(_controller, null, 6),
-                    card(_controller, null, 7),
-                    card(_controller, null, 8),
+                    card(context, _controller, 5),
+                    card(context, _controller, 6),
+                    card(context, _controller, 7),
+                    card(context, _controller, 8),
                   ],
                 ),
                 SizedBox(height: 40),
-                SizedBox(height: 150, child: card(_controller, null, 9)),
+                SizedBox(height: 150, child: card(context, _controller, 9)),
               ],
             ),
           ),
@@ -80,4 +81,93 @@ class _ItemsMenuScreenState extends State<ItemsMenuScreen> {
       ),
     );
   }
+}
+
+Widget card(BuildContext context, HomePageController _controller, int index) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (_) => ProductMenu(
+                tableName: _controller.categoryImage[index]['name'],
+              ),
+        ),
+      );
+    },
+    child: Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.green,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      _controller.categoryImage[index]['name'],
+                      style: categoriesText(),
+                    ),
+                    Text(
+                      _controller.categoryImage[index]['items'],
+                      style: categoriesItems(),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 13,
+                          decoration: BoxDecoration(
+                            color: AppColors.yellow,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              topRight: Radius.elliptical(40, 20),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 13,
+                            decoration: BoxDecoration(
+                              color: AppColors.yellow,
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                topLeft: Radius.elliptical(40, 20),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned.fill(
+          top: -5,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Image.asset(
+                _controller.categoryImage[index]['path'],
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

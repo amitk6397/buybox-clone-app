@@ -103,7 +103,7 @@ class HomePageController extends GetxController {
         },
         {
           'path': 'assets/category/items.jpg',
-          'name': 'Atta, Rice, Oil',
+          'name': 'Groceries',
           'items': '100+ Items',
         },
         {

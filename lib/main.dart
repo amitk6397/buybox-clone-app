@@ -9,18 +9,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final directory = await getApplicationDocumentsDirectory();
   Get.put(SerachScreenItemController(), permanent: true);
   Get.put(AddRemoveCartController(), permanent: true);
   Get.put(ImagePickerController(), permanent: true);
   Get.lazyPut(() => NavigationbarController(), fenix: true);
-  Hive.init(directory.path);
+
   runApp(const MyApp());
 }
 

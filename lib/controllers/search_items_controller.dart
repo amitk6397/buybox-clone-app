@@ -1,4 +1,5 @@
 import 'package:buybox_app/models/response_models/search_response_model.dart';
+import 'package:buybox_app/services/db_helper.dart';
 import 'package:buybox_app/services/search_auth.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ class SearchItemsController extends GetxController {
 
   RxBool get isChange => _isChange;
 
+  // DBHelper? dbRef;
+
   void itemChange() {
     if (_isChange.value) {
       _isChange.value = false;
@@ -21,11 +24,22 @@ class SearchItemsController extends GetxController {
 
   Future<void> fetchData(String query) async {
     isLoading.value = true;
-
+    // dbRef = DBHelper(TABLE_NAME: query);
     try {
       final response = await _auth.fetchData(query);
       if (!response.contains(_product)) {
         _product.assignAll(response);
+        // response.map((item) {
+        //   dbRef!.addData(
+        //     id: item.asin,
+        //     title: item.productTitle,
+        //     image: item.productPhoto,
+        //     price: item.productPrice,
+        //     originPrice: item.productOriginalPrice,
+        //     unitCount: item.unitCount.toString(),
+        //     salesVolume: item.salesVolume,
+        //   );
+        // }).toList();
       }
     } catch (e) {
       print('error mx kjn = = = = = = = = =  $e');

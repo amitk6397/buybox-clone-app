@@ -23,7 +23,7 @@ class OrderRequestModel {
           (json['items'] as List)
               .map((item) => OrderItem.fromMap(item))
               .toList(),
-      total: json['total'].toDouble(),
+      total: json['total'],
       status: json['status'],
       timestamp: DateTime.parse(json['timestamp']),
     );
@@ -46,7 +46,7 @@ class OrderItem {
   final String name;
   final String image;
   final int quantity;
-  final double price;
+  final String price;
 
   OrderItem({
     required this.itemId,

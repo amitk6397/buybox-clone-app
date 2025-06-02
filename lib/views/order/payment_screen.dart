@@ -1,3 +1,4 @@
+import 'package:buybox_app/controllers/address_order_save_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/order_controller.dart';
 import 'package:buybox_app/utils/app_colors.dart';
@@ -18,6 +19,9 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final OrderController _controller = Get.find();
   final NavigationbarController _controller2 = Get.find();
+  final AddressOrderSaveController _controller3 = Get.put(
+    AddressOrderSaveController(),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +132,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   vertical: 10,
                 ),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _controller3.addOrderInFirebase();
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 60,
