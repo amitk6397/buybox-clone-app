@@ -5,7 +5,7 @@ class SearchInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.headers.addAll({
       'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
-      'x-rapidapi-key': '29a4dde1d7mshcd6c0966cdddfabp1d139djsn0fe584e0ad40',
+      'x-rapidapi-key': 'fcdf6c2ca4msh632c08d0cec0f10p11b1f8jsn3f7dc9bc9807',
     });
     print('Request ========= : ${options.method} and ${options.uri}');
     return handler.next(options);

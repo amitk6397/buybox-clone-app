@@ -35,17 +35,17 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-              <!-- <service
-    android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
-    android:exported="true">
-    <intent-filter>
-        <action android:name="com.google.firebase.MESSAGING_EVENT" />
-    </intent-filter>
+             <!-- <service
+  android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
+  android:exported="true">
+  <intent-filter>
+    <action android:name="com.google.firebase.MESSAGING_EVENT" />
+  </intent-filter>
 </service>
 
 <meta-data
     android:name="com.google.firebase.messaging.default_notification_channel_id"
-    android:value="high_importance_channel"/> -->
+    android:value="ecomm-channel"/> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
