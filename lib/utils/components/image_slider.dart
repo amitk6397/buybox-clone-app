@@ -37,3 +37,40 @@ class ImageSlider extends StatelessWidget {
     );
   }
 }
+
+class ImageSlider2 extends StatelessWidget {
+  List<String> imageSlider = [
+    'assets/card/card1.jpg',
+    'assets/card/card2.png',
+    'assets/card/card3.png',
+    'assets/card/card4.jpg',
+    'assets/card/card2.png',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider.builder(
+      itemCount: imageSlider.length,
+      itemBuilder: (context, index, realInd) {
+        return Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          // margin: EdgeInsets.symmetric(horizontal: 5.0), // GAP/MARGIN here
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: AssetImage(imageSlider[index]),
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+      options: CarouselOptions(
+        autoPlay: true,
+        viewportFraction: 0.8,
+        aspectRatio: 2.2,
+        scrollPhysics: BouncingScrollPhysics(),
+        enlargeCenterPage: true,
+      ),
+    );
+  }
+}

@@ -30,7 +30,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               ? Column(
                 children: [
                   topWidget(mediaQuery.size),
-                  checkOutWidget(_controller1, _controller2, mediaQuery.size),
+                  checkOutWidget(
+                    _controller,
+                    _controller1,
+                    _controller2,
+                    mediaQuery.size,
+                  ),
                   Expanded(child: cartItemWidget(_controller)),
                   totalPriceWidget(_controller),
                 ],
@@ -60,6 +65,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                   horizontal: 10.0,
                                 ),
                                 child: checkOutWidget(
+                                  _controller,
                                   _controller1,
                                   _controller2,
                                   mediaQuery.size,
@@ -214,6 +220,7 @@ Widget cartItemWidget(AddRemoveCartController _controller) {
 }
 
 Widget checkOutWidget(
+  AddRemoveCartController _controller,
   OrderController _controller1,
   NavigationbarController _controller2,
   Size size,
@@ -222,10 +229,23 @@ Widget checkOutWidget(
     onTap: () {
       _controller1.getData();
       _controller1.changeWidget(false);
+
       final navKey = _controller2.navigatorKeys[_controller2.index.value];
       navKey.currentState!.push(
         MaterialPageRoute(builder: (_) => AddressScreen()),
       );
+      // if (_controller.cartItems.isEmpty) {
+      //   Get.snackbar(
+      //     'Products',
+      //     'Please add to cart then go payment',
+      //     backgroundColor: AppColors.errorMessageColor,
+      //   );
+      // } else {
+      //   final navKey = _controller2.navigatorKeys[_controller2.index.value];
+      //   navKey.currentState!.push(
+      //     MaterialPageRoute(builder: (_) => AddressScreen()),
+      //   );
+      // }
     },
     child: Container(
       width: size.width,

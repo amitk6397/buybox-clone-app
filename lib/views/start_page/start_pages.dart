@@ -24,7 +24,7 @@ class _StartPagesState extends State<StartPages> {
           mediaQuery.orientation == Orientation.portrait
               ? Column(
                 children: [
-                  SizedBox(height: 60),
+                  SizedBox(height: 48),
                   Obx(() => imageTop(controller)),
                   Expanded(child: bottomContainer(controller)),
                 ],

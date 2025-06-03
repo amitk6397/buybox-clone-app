@@ -106,7 +106,7 @@ Widget textfield(
   Widget? button,
   TextEditingController _controller,
 ) {
-  return TextFormField(
+  return TextField(
     controller: _controller,
     decoration: InputDecoration(
       hintText: hinttext,

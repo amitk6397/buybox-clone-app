@@ -71,7 +71,7 @@ class _SearchProductsState extends State<SearchProducts> {
                         focusNode: focusNode,
                         controller: searchController,
                         onSubmitted: (String value) {
-                          // _controller1.fetchData(value.trim());
+                          _controller1.fetchData(value.trim());
                           _controller.addText(value.trim());
                           searchController.text = '';
                           _controller.iconChange(false);

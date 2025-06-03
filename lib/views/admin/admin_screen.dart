@@ -27,14 +27,16 @@ class _AdminScreenState extends State<AdminScreen> {
       drawer: DrawerPage(controller: _controller),
 
       appBar: AppBar(
-        iconTheme: IconThemeData(color: AppColors.grey, size: 25),
+        iconTheme: IconThemeData(color: AppColors.white, size: 25),
+        backgroundColor: AppColors.green,
         title: Obx(
           () => Text(
             _controller.drawerName[_controller.index.value],
             style: TextStyle(
               fontSize: 20,
+
               fontWeight: FontWeight.w600,
-              color: AppColors.grey,
+              color: AppColors.white,
             ),
           ),
         ),

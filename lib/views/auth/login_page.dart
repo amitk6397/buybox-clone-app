@@ -158,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                           emailController.text.trim(),
                           passController.text.trim(),
                         );
+                        _controller.saveUserToken();
                       }, _controller.isLoading),
                       SizedBox(height: 20),
                       Text(

@@ -6,6 +6,8 @@ import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
+import 'package:buybox_app/services/get_service_key.dart';
+import 'package:buybox_app/services/notification_service.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/category_components.dart';
 import 'package:buybox_app/utils/components/image_slider.dart';
@@ -36,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _controller1.fetchData('');
+    _controller1.fetchData('best-sellers');
     _controller2.fetchData();
     Timer(Duration(seconds: 3), () async {
       final prefs = await SharedPreferences.getInstance();
@@ -94,7 +96,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () async {},
+                      onTap: () async {
+                        NotificationService notificationService =
+                            NotificationService();
+
+                        notificationService.requestNotificationPermission();
+
+                        // GetServerKey getServerKey = GetServerKey();
+                        // String token = await getServerKey.getServerKeyToken();
+                        // print(
+                        //   'token server key = = - - -- - -- ---------$token',
+                        // );
+                      },
                       child: CircleAvatar(
                         backgroundColor: AppColors.yellow,
                         child: Icon(

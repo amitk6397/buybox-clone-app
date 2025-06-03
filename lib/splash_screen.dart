@@ -19,7 +19,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
@@ -66,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Image.asset(
                   'assets/images/logo.png',
                   color: AppColors.green,
+                  filterQuality: FilterQuality.high,
                   colorBlendMode: BlendMode.dst,
                 ),
               ),

@@ -33,22 +33,40 @@ class DrawerPage extends StatelessWidget {
             Obx(() {
               return UserAccountsDrawerHeader(
                 margin: EdgeInsets.all(0),
-                decoration: BoxDecoration(color: Colors.grey.shade200),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/cooking_background.webp'),
+                    opacity: 0.3,
+                    fit: BoxFit.cover,
+                  ),
+                  color: Colors.grey.shade200,
+                ),
                 accountName: Text(
                   controller.adminData[0]['userName'] ?? 'Admin Name',
                   style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
+                    color: AppColors.green,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+
                 accountEmail: Text(
                   controller.adminData[0]['email'] ?? 'Admin email',
                   style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
+                    color: AppColors.green,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                currentAccountPicture: CircleAvatar(),
+                currentAccountPicture: CircleAvatar(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset(
+                      'assets/images/login_logo.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
               );
             }),
             listTileDrawer(
@@ -136,41 +154,44 @@ Widget listTileDrawer(
 ) {
   return GestureDetector(
     onTap: onTap,
-    child: Container(
-      padding: EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color:
-            controller.index.value == index
-                ? Colors.grey.shade300
-                : AppColors.white,
-      ),
-      child: ListTile(
-        leading: Icon(
-          logo,
+    child: Padding(
+      padding: const EdgeInsets.only(top: 0, left: 10, right: 10, bottom: 2),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
           color:
               controller.index.value == index
-                  ? AppColors.green
-                  : AppColors.grey,
+                  ? AppColors.yellow
+                  : AppColors.white,
         ),
-        title: Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
+        child: ListTile(
+          leading: Icon(
+            logo,
             color:
                 controller.index.value == index
-                    ? AppColors.green
+                    ? AppColors.white
                     : AppColors.grey,
           ),
-        ),
-        trailing: Icon(
-          icon,
-          size: 25,
-          color:
-              controller.index.value == index
-                  ? AppColors.green
-                  : AppColors.grey,
+          title: Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color:
+                  controller.index.value == index
+                      ? AppColors.white
+                      : AppColors.grey,
+            ),
+          ),
+          trailing: Icon(
+            icon,
+            size: 25,
+            color:
+                controller.index.value == index
+                    ? AppColors.white
+                    : AppColors.grey,
+          ),
         ),
       ),
     ),

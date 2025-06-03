@@ -205,7 +205,7 @@ updateDialog(
             16,
           ),
           textButton(
-            () {
+            () async {
               if (controller.text.trim().isEmpty) {
                 Get.snackbar(
                   'UserName',
@@ -213,14 +213,15 @@ updateDialog(
                   backgroundColor: AppColors.errorMessageColor,
                 );
               } else {
-                controller1.changeName(controller.text);
-                controller2!.fetchData();
+                await controller1.changeName(controller.text);
+                controller2?.fetchData();
+
+                Navigator.of(context).pop();
                 Get.snackbar(
                   'Success',
                   'Update your name',
                   backgroundColor: AppColors.successMessageColor,
                 );
-                Get.back();
               }
             },
             'Add',

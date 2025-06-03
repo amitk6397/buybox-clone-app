@@ -153,6 +153,7 @@ class _SigninPageState extends State<SigninPage> {
                           emailController.text.trim(),
                           passController.text.trim(),
                         );
+                        _controller2.saveUserToken();
                       }, _controller2.isLoading),
                       SizedBox(height: 20),
                       Text(

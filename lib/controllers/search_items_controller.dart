@@ -2,6 +2,8 @@ import 'package:buybox_app/models/response_models/search_response_model.dart';
 import 'package:buybox_app/services/db_helper.dart';
 import 'package:buybox_app/services/search_auth.dart';
 import 'package:buybox_app/utils/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 class SearchItemsController extends GetxController {
@@ -51,5 +53,18 @@ class SearchItemsController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> saveUserToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    print(
+      'firebase message  = = = = = =fdv==============$uid = = = = $token  ',
+    );
+
+    // await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    //   'fcm_token': token,
+    // });
   }
 }

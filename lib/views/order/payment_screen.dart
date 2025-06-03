@@ -241,7 +241,7 @@ Widget secondWidget() {
   final FocusNode cvvFocus = FocusNode();
   return Column(
     children: [
-      ImageSlider(),
+      ImageSlider2(),
       SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),

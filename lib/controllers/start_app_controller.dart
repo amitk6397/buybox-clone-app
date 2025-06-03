@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class StartAppController extends GetxController {
   final RxList<String> _images =
       [
-        'assets/images/bag.jpg',
+        'assets/images/bag.avif',
         'assets/images/girlbag.jpg',
         'assets/images/young.avif',
       ].obs;

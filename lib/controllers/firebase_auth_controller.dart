@@ -2,6 +2,7 @@ import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -18,49 +19,60 @@ class FirebaseAuthController extends GetxController {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-
+      final user = userCredential.user!;
       final document =
           await _firestore
               .collection('users')
               .doc(userCredential.user!.uid)
               .get();
 
-      if (document.exists && document.data()?['blocked'] == true) {
+      // If user doc doesn't exist, create it
+      if (!document.exists) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'uid': user.uid,
+          'email': user.email,
+          'userName': user.email?.split('@').first ?? 'New User',
+          'role': 'user',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      // Fetch user data again after creation
+      final data =
+          (await _firestore.collection('users').doc(user.uid).get()).data()!;
+
+      if (data['blocked'] == true) {
         Get.snackbar('Access Denied', 'Your account has been blocked.');
         await FirebaseAuth.instance.signOut();
         Get.offAllNamed(AppRoutes.login);
         return;
       }
 
-      Map<String, dynamic> userRole = document.data() as Map<String, dynamic>;
+      String roleName = data['role'];
 
-      String roleName = userRole['role'];
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('role', roleName);
+      pref.setString('token', userCredential.user!.uid);
 
-      if (userRole['role'] == 'admin') {
-        final pref = await SharedPreferences.getInstance();
-        pref.setString('role', roleName);
-        pref.setString('token', userCredential.user!.uid);
+      if (roleName == 'admin') {
         Get.offAllNamed(AppRoutes.adminDashboard);
         Get.snackbar(
           "Success",
-          "Register Success Admin",
+          "Login Success (Admin)",
           backgroundColor: AppColors.successMessageColor,
         );
       } else {
-        final pref = await SharedPreferences.getInstance();
-        pref.setString('role', roleName);
-        pref.setString('token', userCredential.user!.uid);
         Get.offAllNamed(AppRoutes.myHome);
         Get.snackbar(
           "Success",
-          "Register Success user",
+          "Login Success (User)",
           backgroundColor: AppColors.successMessageColor,
         );
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Error',
-        '${e.toString()}',
+        '${e.message}',
         backgroundColor: AppColors.errorMessageColor,
       );
       print(e);
@@ -100,5 +112,16 @@ class FirebaseAuthController extends GetxController {
         backgroundColor: AppColors.errorMessageColor,
       );
     }
+  }
+
+  Future<void> saveUserToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    print('firebase message  = = = = = =fdv==============$token');
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'fcm_token': token,
+    });
   }
 }

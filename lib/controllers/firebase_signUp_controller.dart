@@ -2,6 +2,7 @@ import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,7 @@ class FirebaseSignupController extends GetxController {
         'date': date,
         'time': time,
         'role': role,
+        'createdAt': FieldValue.serverTimestamp(),
       });
 
       //navigate
@@ -77,5 +79,16 @@ class FirebaseSignupController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> saveUserToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    print('firebase message  = = = = = =fdv==============$token');
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'fcm_token': token,
+    });
   }
 }
