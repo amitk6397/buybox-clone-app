@@ -1,5 +1,7 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/models/request_models/order_request_model.dart';
+import 'package:buybox_app/services/notification_service.dart';
+import 'package:buybox_app/services/send_notification_service.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressOrderSaveController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  NotificationService notificationService = NotificationService();
 
   final AddRemoveCartController _controller = Get.find();
 
@@ -53,6 +57,27 @@ class AddressOrderSaveController extends GetxController {
           .doc(userToken)
           .collection('orders')
           .add(order.toMap());
+
+      await _firestore
+          .collection('users')
+          .doc(userToken)
+          .collection('notifications')
+          .add({
+            'title':
+                'Order Successfully placed  ${prefs.getString('userName')}',
+            'body': orderItems[0].name,
+            'image': orderItems[0].image,
+            'isSeen': false,
+            'total': total.toDouble(),
+            'orderId': orderId,
+            'createAt': DateTime.now(),
+          });
+
+      SendNotificationService.sendNotificationMessage(
+        title: orderItems[0].name,
+        body: 'Order Successfully placed  ${prefs.getString('userName')}',
+        data: {'screen': 'notification_screen'},
+      );
 
       Get.snackbar(
         'Success',

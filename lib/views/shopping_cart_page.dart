@@ -1,7 +1,6 @@
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
 import 'package:buybox_app/controllers/order_controller.dart';
-import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/category_button.dart';
 import 'package:buybox_app/utils/components/common_button.dart';
@@ -155,7 +154,7 @@ Widget topWidget(Size size) {
   );
 }
 
-Widget totalPriceWidget(AddRemoveCartController _controller) {
+Widget totalPriceWidget(AddRemoveCartController controller) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
     child: Container(
@@ -169,7 +168,7 @@ Widget totalPriceWidget(AddRemoveCartController _controller) {
           children: [
             row(
               'Subtotal',
-              '₹${_controller.totalPrice.toStringAsFixed(2)}',
+              '₹${controller.totalPrice.toStringAsFixed(2)}',
               Colors.grey.shade700,
             ),
             SizedBox(height: 15),
@@ -177,7 +176,7 @@ Widget totalPriceWidget(AddRemoveCartController _controller) {
             SizedBox(height: 15),
             row(
               'Total',
-              '₹${_controller.totalPrice.toStringAsFixed(2)}',
+              '₹${controller.totalPrice.toStringAsFixed(2)}',
               Colors.black,
             ),
           ],
@@ -187,30 +186,30 @@ Widget totalPriceWidget(AddRemoveCartController _controller) {
   );
 }
 
-Widget cartItemWidget(AddRemoveCartController _controller) {
+Widget cartItemWidget(AddRemoveCartController controller) {
   return Obx(() {
     return ListView(
       padding: EdgeInsets.only(top: 0),
-      children: List.generate(_controller.cartItems.length, (index) {
+      children: List.generate(controller.cartItems.length, (index) {
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(_controller.cartItems[index].image),
+            backgroundImage: NetworkImage(controller.cartItems[index].image),
           ),
           title: Text(
-            _controller.cartItems[index].title,
+            controller.cartItems[index].title,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text(_controller.cartItems[index].price),
+          subtitle: Text(controller.cartItems[index].price),
           trailing: SizedBox(
             width: 120,
             child: addRemove(
               () {
-                _controller.addItem(_controller.cartItems[index].id);
+                controller.addItem(controller.cartItems[index].id);
               },
               () {
-                _controller.removeItem(_controller.cartItems[index].id);
+                controller.removeItem(controller.cartItems[index].id);
               },
-              _controller.getCount(_controller.cartItems[index].id),
+              controller.getCount(controller.cartItems[index].id),
             ),
           ),
         );
@@ -220,32 +219,20 @@ Widget cartItemWidget(AddRemoveCartController _controller) {
 }
 
 Widget checkOutWidget(
-  AddRemoveCartController _controller,
-  OrderController _controller1,
-  NavigationbarController _controller2,
+  AddRemoveCartController controller,
+  OrderController controller1,
+  NavigationbarController controller2,
   Size size,
 ) {
   return GestureDetector(
     onTap: () {
-      _controller1.getData();
-      _controller1.changeWidget(false);
+      controller1.getData();
+      controller1.changeWidget(false);
 
-      final navKey = _controller2.navigatorKeys[_controller2.index.value];
+      final navKey = controller2.navigatorKeys[controller2.index.value];
       navKey.currentState!.push(
         MaterialPageRoute(builder: (_) => AddressScreen()),
       );
-      // if (_controller.cartItems.isEmpty) {
-      //   Get.snackbar(
-      //     'Products',
-      //     'Please add to cart then go payment',
-      //     backgroundColor: AppColors.errorMessageColor,
-      //   );
-      // } else {
-      //   final navKey = _controller2.navigatorKeys[_controller2.index.value];
-      //   navKey.currentState!.push(
-      //     MaterialPageRoute(builder: (_) => AddressScreen()),
-      //   );
-      // }
     },
     child: Container(
       width: size.width,

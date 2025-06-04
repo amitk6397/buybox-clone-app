@@ -97,14 +97,69 @@ class FirebaseAuthController extends GetxController {
         credential,
       );
 
+      final data =
+          (await _firestore
+                  .collection('users')
+                  .doc(UserCredential.user!.uid)
+                  .get())
+              .data()!;
+      final user = UserCredential.user!;
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid);
+      if (!(await docRef.get()).exists) {
+        await docRef.set({
+          'uid': user.uid,
+          'email': user.email,
+          'userName':
+              user.displayName ?? user.email?.split('@').first ?? 'User',
+          'role': 'user',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      if (data['blocked'] == true) {
+        Get.snackbar('Access Denied', 'Your account has been blocked.');
+        await FirebaseAuth.instance.signOut();
+        Get.offAllNamed(AppRoutes.login);
+        return;
+      }
+
+      String roleName = data['role'];
+
       final pref = await SharedPreferences.getInstance();
       pref.setString('token', UserCredential.user!.uid);
-      Get.offAllNamed(AppRoutes.myHome);
-      Get.snackbar(
-        'Success',
-        'Login Success',
-        backgroundColor: AppColors.successMessageColor,
-      );
+      pref.setString('role', roleName);
+
+      if (roleName == 'admin') {
+        Get.offAllNamed(AppRoutes.adminDashboard);
+        Get.snackbar(
+          "Success",
+          "Login Success (Admin)",
+          backgroundColor: AppColors.successMessageColor,
+        );
+      } else {
+        Get.offAllNamed(AppRoutes.myHome);
+        Get.snackbar(
+          "Success",
+          "Login Success (User)",
+          backgroundColor: AppColors.successMessageColor,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        Get.snackbar(
+          "Account Exists",
+          "This email is already registered with a password. Please log in using Email & Password first.",
+          backgroundColor: AppColors.errorMessageColor,
+        );
+      } else {
+        Get.snackbar(
+          "Login Error",
+          e.message ?? "Something went wrong",
+          backgroundColor: AppColors.errorMessageColor,
+        );
+      }
     } catch (e) {
       Get.snackbar(
         "Error",

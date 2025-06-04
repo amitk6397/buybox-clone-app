@@ -90,42 +90,42 @@ class _SearchProductsState extends State<SearchProducts> {
                             itemBuilder: (BuildContext context) {
                               return [
                                 PopupMenuItem(
-                                  child: Text('Fruits'),
                                   value: 'fruits',
+                                  child: Text('Fruits'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Vegetable'),
                                   value: 'veg',
+                                  child: Text('Vegetable'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Chicken'),
                                   value: 'chicken',
+                                  child: Text('Chicken'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Chocolates'),
                                   value: 'choco',
+                                  child: Text('Chocolates'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Rice'),
                                   value: 'rice',
+                                  child: Text('Rice'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Atta'),
                                   value: 'atta',
+                                  child: Text('Atta'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Clothes'),
                                   value: 'cloth',
+                                  child: Text('Clothes'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Mobile'),
                                   value: 'mobile',
+                                  child: Text('Mobile'),
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Watch'),
                                   value: 'watch',
+                                  child: Text('Watch'),
                                 ),
-                                PopupMenuItem(child: Text('Oil'), value: 'oil'),
+                                PopupMenuItem(value: 'oil', child: Text('Oil')),
                               ];
                             },
                           ),

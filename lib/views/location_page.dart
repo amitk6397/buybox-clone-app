@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
@@ -23,7 +20,6 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller.getLocation();
   }

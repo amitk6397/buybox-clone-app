@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:buybox_app/controllers/user_controller/image_picker_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/app_colors.dart';
-import 'package:buybox_app/views/start_page/start_pages.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

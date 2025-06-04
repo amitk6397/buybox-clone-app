@@ -6,10 +6,12 @@ import 'package:buybox_app/route/app_pages.dart';
 import 'package:buybox_app/route/app_routes.dart';
 import 'package:buybox_app/utils/components/bottom_navigationbar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+@pragma('vm:entry-point')
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -17,8 +19,12 @@ void main() async {
   Get.put(AddRemoveCartController(), permanent: true);
   Get.put(ImagePickerController(), permanent: true);
   Get.lazyPut(() => NavigationbarController(), fenix: true);
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
@@ -55,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
+      // ignore: deprecated_member_use
       onPopInvoked: (didPop) async {
         if (!didPop) {
           final shouldPop = await _controller.onWillPop();

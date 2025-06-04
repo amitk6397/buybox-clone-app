@@ -1,18 +1,23 @@
 import 'dart:async';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:buybox_app/controllers/add_remove_cart_controller.dart';
 import 'package:buybox_app/controllers/get_firebasestore_data.dart';
 import 'package:buybox_app/controllers/home_page_controller.dart';
 import 'package:buybox_app/controllers/navigationbar_controller.dart';
+import 'package:buybox_app/controllers/notification_controller.dart';
 import 'package:buybox_app/controllers/search_items_controller.dart';
 import 'package:buybox_app/route/app_routes.dart';
+import 'package:buybox_app/services/fcm_service.dart';
 import 'package:buybox_app/services/get_service_key.dart';
 import 'package:buybox_app/services/notification_service.dart';
+import 'package:buybox_app/services/send_notification_service.dart';
 import 'package:buybox_app/utils/app_colors.dart';
 import 'package:buybox_app/utils/components/category_components.dart';
 import 'package:buybox_app/utils/components/image_slider.dart';
 import 'package:buybox_app/utils/text_style/text_styles.dart';
 import 'package:buybox_app/views/category/all_category_items.dart';
+import 'package:buybox_app/views/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -31,14 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
   final GetFirebasestoreData _controller2 = Get.find();
   final NavigationbarController _controller3 = Get.find();
   final AddRemoveCartController _controller4 = Get.find();
+  final NotificationController notificationController = Get.put(
+    NotificationController(),
+  );
 
   final FocusNode _focusNode = FocusNode();
+
+  NotificationService notificationService = NotificationService();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller1.fetchData('best-sellers');
+    notificationService.requestNotificationPermission();
+    notificationService.firebaseInit(context);
+    notificationService.setupInteractMessage(context);
+    //_controller1.fetchData('best-sellers');
     _controller2.fetchData();
     Timer(Duration(seconds: 3), () async {
       final prefs = await SharedPreferences.getInstance();
@@ -77,48 +90,57 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Obx(
-                          () =>
-                              Text(_controller2.name.value, style: nameText()),
-                        ),
-                        SizedBox(width: 5),
-                        Icon(
-                          Icons.waving_hand_rounded,
-                          color: AppColors.yellow,
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        NotificationService notificationService =
-                            NotificationService();
+              Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(_controller2.name.value, style: nameText()),
 
-                        notificationService.requestNotificationPermission();
-
-                        // GetServerKey getServerKey = GetServerKey();
-                        // String token = await getServerKey.getServerKeyToken();
-                        // print(
-                        //   'token server key = = - - -- - -- ---------$token',
-                        // );
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.yellow,
-                        child: Icon(
-                          Icons.notifications,
-                          color: AppColors.white,
+                          SizedBox(width: 5),
+                          Icon(
+                            Icons.waving_hand_rounded,
+                            color: AppColors.yellow,
+                          ),
+                        ],
+                      ),
+                      badges.Badge(
+                        showBadge:
+                            notificationController.notificationCount.value > 0,
+                        badgeContent: Text(
+                          notificationController.notificationCount.value
+                              .toString(),
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                        position: badges.BadgePosition.topStart(
+                          top: 1,
+                          start: 2,
+                        ),
+                        child: GestureDetector(
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => NotificationScreen(),
+                              ),
+                            );
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.yellow,
+                            child: Icon(
+                              Icons.notifications,
+                              color: AppColors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              }),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
